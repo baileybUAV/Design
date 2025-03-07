@@ -2,7 +2,7 @@ import graphviz
 import json
 
 #Example using json library
-#creating dictionary
+#creating dictionary, can be removed later
 Foundations_of_Engineering = {
     "name": "Foundations_of_Engineering",
     "abbrev": "Foundations of Eng",
@@ -77,10 +77,12 @@ Composition_II = {
     "completed": "N",
 }
 
-schedule = [[],[],[],[],[],[],[],[],[]]
+schedule = [[],[],[],[],[],[],[],[],[]] 
 
 # adds course to schedule list
 #semester 0 = first semester taking courses, semester 1 = second semester, etc.
+
+#-----Schedule changing function-----#
 def flowchart_gen(course, semester, add_remove):
     if add_remove == True:
         schedule[semester].append(course)
@@ -99,12 +101,13 @@ flowchart_gen("General_Physics_I_Lab",1,True)
 flowchart_gen("Composition_II",1,True)
 
 #Making flowchart
-#attr command effects all later nodes/edges in the same sub-graph
-dot = graphviz.Digraph('flowchart', comment='Curriculum FLowchart')
-for semester in range(2):
+#Note: attr command effects all later nodes/edges in the same sub-graph
+
+dot = graphviz.Digraph('flowchart') #creates flowchart obj
+for semester in range(2): 
     n = len([len(x) for x in schedule[semester]]) #num of classes in the semester sublist
     with dot.subgraph(name = 'cluster_'+str(semester)) as a:
-        a.attr(label = 'semester '+str(semester+1))
+        a.attr(label = 'semester '+str(semester+1)) #labels subgraph
         for classes in range(n):
             node_name = str(semester)+str(classes)
             course = schedule[semester][classes]
@@ -125,13 +128,9 @@ for semester in range(2):
             if dictionary.get("prereq") != "N/A":
                 prereq = dictionary.get("prereq")
                 a.edge(prereq, course)
-                #a.attr(course, style = 'filled')
 
             if dictionary.get("coreq") != "N/A":
                 coreq = dictionary.get("coreq")
                 a.edge(coreq, course, dir='none')
 
-            
-print(dot.source)
-
-dot.view()
+dot.view() #Creates an error but doesn't stop the code from working so idk

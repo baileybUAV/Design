@@ -1,0 +1,25 @@
+digraph flowchart {
+	subgraph cluster_0 {
+		label="semester 1"
+		node [fontcolor=green]
+		Foundations_of_Engineering [color=darkgoldenrod1 style=filled]
+		node [fontcolor=green]
+		Calculus_I [color=firebrick3 style=filled]
+		node [fontcolor=green]
+		Foundations_of_Engineering_Lab [color=darkgoldenrod1 style=filled]
+		node [fontcolor=green]
+		Composition_I [color=lightblue style=filled]
+	}
+	subgraph cluster_1 {
+		label="semester 2"
+		Calculus_II [color=firebrick3 style=filled]
+		Calculus_I -> Calculus_II
+		General_Physics_I [color=firebrick3 style=filled]
+		Calculus_I -> General_Physics_I
+		General_Physics_I_Lab -> General_Physics_I [dir=none]
+		General_Physics_I_Lab [color=firebrick3 style=filled]
+		General_Physics_I -> General_Physics_I_Lab [dir=none]
+		Composition_II [color=lightblue style=filled]
+		Composition_I -> Composition_II
+	}
+}
