@@ -73,7 +73,7 @@ if os.path.exists("classes_with_grades.json"):
 # Creating data from PDF
 else:
     # Calling function to extract data
-    pdf_path = "transcript.pdf"  # File path name 
+    pdf_path = "C:/Users/Graham/OneDrive/Documents/TEMP/transcript.pdf"  # File path name 
     classes_with_grades,passed,failed,inprog = extract_classes_and_grades(pdf_path)
 
     # Save to JSON file
