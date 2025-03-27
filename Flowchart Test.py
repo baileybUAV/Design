@@ -1,6 +1,8 @@
 import graphviz
 import json
 
+import os
+os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
 #Example using json library
 #creating dictionary, can be removed later
 Foundations_of_Engineering = {
