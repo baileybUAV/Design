@@ -1,18 +1,20 @@
+# PDF/Json Libraries
 import re
 import json
 import PyPDF2
+
+# Tkinter/UI library(s)
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
 
 # Function to extract classes taken with their assigned letter grade
 def extract_classes_and_grades(pdf_path):
-    """Extracts course names and grades from a transcript PDF."""
+
     class_pattern = re.compile(r'\b[A-Z]{3}\s?\d{4}[A-Z]?\b')  # Course code pattern
     grade_pattern = re.compile(r'\b(?:[A-F]|S|W|IP)\b')  # Grade pattern
 
-    passed, failed, inprog = [], [], []
-    extracted_data = {}
+    passed, failed, inprog, extracted_data= [], [], [], {}
 
     with open(pdf_path, "rb") as file:
         reader = PyPDF2.PdfReader(file)
@@ -26,7 +28,7 @@ def extract_classes_and_grades(pdf_path):
                     grade = grades[i] if i < len(grades) else "N/A"
                     extracted_data[course] = grade
 
-    for k, s in extracted_data.items():
+    for k, s in extracted_data.items(): # To create lists/ categorize from library
         if s in ["A", "B", "C", "S"]:
             passed.append(k)
         elif s == "IP":
@@ -52,15 +54,12 @@ def Read_Json_Grades(JSON_data):
     return passed, failed, inprog
 
 # Check if previous data exists in cache
-if os.path.exists("classes_with_grades.json"):
-    with open("classes_with_grades.json", "r") as file:
-        data = json.load(file)  # Load JSON data
-    passed, failed, inprog = Read_Json_Grades(data)
-else:
-    data, passed, failed, inprog = {}, [], [], []  # Initialize empty values
+
+data, passed, failed, inprog = {}, [], [], []  # Initialize empty Variables
 
 # ----------------------------------------------------------------------------------------------
-# Tkinter UI Section
+
+# Tkinter/UI Section
 class FileUploader:
     def __init__(self, root):
         self.root = root
@@ -85,9 +84,10 @@ class FileUploader:
         self.ok_button.pack(pady=20)
 
         self.selected_file = None  # Store file path
-
+        
+# Enable/Disable file selection based on checkbox state.
     def toggle_file_selection(self):
-        """Enable/Disable file selection based on checkbox state."""
+        
         if self.use_previous_data.get():
             self.upload_button.config(state=tk.DISABLED)
             self.label.config(text="Using previous data")
@@ -97,31 +97,38 @@ class FileUploader:
             self.label.config(text="No file selected")
             self.ok_button.config(state=tk.DISABLED)  # Disable until a file is uploaded
 
+# Handle file selection and process transcript.
     def upload_transcripts(self):
-        """Handle file selection and process transcript."""
+        
         file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
         if file_path:
             self.selected_file = file_path
             self.label.config(text=f"Selected File: {os.path.basename(file_path)}")
             self.ok_button.config(state=tk.NORMAL)  # Enable OK button
 
+# Process either the selected file or cached data and close the UI.
     def confirm_selection(self):
-        """Process either the selected file or cached data and close the UI."""
+        
         global data, passed, failed, inprog
 
-        if self.use_previous_data.get():
+        if self.use_previous_data.get() and os.path.exists("classes_with_grades.json"):
             messagebox.showinfo("Info", "Using previous data from cache.")
+            with open("classes_with_grades.json", "r") as file:
+                data = json.load(file)  # Load JSON data
+            passed, failed, inprog = Read_Json_Grades(data)
+
         elif self.selected_file:
-            # Extract data from the new PDF
+            # Extract data from the PDF
             data, passed, failed, inprog = extract_classes_and_grades(self.selected_file)
 
             # Save to JSON file
             with open("classes_with_grades.json", "w") as json_file:
                 json.dump(data, json_file, indent=4)
 
-            messagebox.showinfo("Success", "Transcript processed and saved.")
+            messagebox.showinfo("Success", "Transcript processed and saved for future reference")
+
         else:
-            messagebox.showwarning("Warning", "No file selected!")
+            messagebox.showwarning("Warning", "No cache file exists!")
             return  # Prevent closing if no file is selected
 
         # Close the Tkinter window after confirmation
