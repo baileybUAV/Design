@@ -64,13 +64,14 @@ This project provides the functionality listed below:
 - Graphviz (graphing)
 - PyPDF2 (transcript reading)
 
-Other used libraries that are included in Python's Standard Library and do not need to be installed:
+Other used libraries that are included in Python's Standard Library or are installed with Python 3.x, and so do not need to be installed:
 
 - webbrowser (web browser controller)
 - tkinter (Graphical User Interface)
 - re (regular expression operations)
 - os (operating system interfaces)
 - json (data interchange)
+- pip (recommended package install method)
 
 
 ### Installing
