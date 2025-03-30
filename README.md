@@ -84,25 +84,16 @@ https://graphviz.org/download/
 Click the *graphviz-12.2.0 64-bit EXE installer* to start the download. Run the .exe, click next, and agree to the license agreement
 
 In install options, select *Add Graphviz to the system PATH for all users* and click next. Make sure the Destination Folder is placed within the Program Files folder, click next, and click install.
-___
-Graphviz can also be installed using pip by opening the command prompt and typing the following command:
-```
-pip install graphviz --target C:\Program Files
-```
 
 #### 2. Installing PyPDF2
 PyPDF2 can be installed using pip by opening the command prompt and typing the following command:
 ```
-pip install PyPDF2 --target C:\Program Files
+pip install PyPDF2
 ```
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
+To start the application, run the FULL_TEST_UI.py python file.
 
 ## Help
 
