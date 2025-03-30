@@ -1,0 +1,10 @@
+{
+    "student_id": "202512345",
+    "name": "Jane Doe",
+    "completed_courses": ["CS101", "MATH101"],
+    "planned_courses": {
+      "Fall 2025": ["CS102", "MATH201"],
+      "Spring 2026": ["CS201"]
+    }
+  }
+  

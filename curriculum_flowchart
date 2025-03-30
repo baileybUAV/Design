@@ -1,0 +1,17 @@
+// Curriculum Flowchart
+digraph {
+	rankdir=LR size="8,5"
+	CS101 [label="CS101
+Introduction to Computer Science" fillcolor=lightblue style=filled]
+	CS102 [label="CS102
+Data Structures" fillcolor=lightblue style=dashed]
+	CS101 -> CS102
+	CS201 [label="CS201
+Algorithms" fillcolor=lightblue style=dashed]
+	CS102 -> CS201
+	MATH101 [label="MATH101
+Calculus I" fillcolor=lightgray style=filled]
+	MATH201 [label="MATH201
+Discrete Mathematics" fillcolor=lightgray style=dashed]
+	MATH101 -> MATH201
+}

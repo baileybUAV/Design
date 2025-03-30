@@ -1,0 +1,40 @@
+{
+    "courses": {
+      "CS101": {
+        "name": "Introduction to Computer Science",
+        "credits": 3,
+        "type": "core",
+        "description": "Learn the basics of computer science.",
+        "prerequisites": []
+      },
+      "CS102": {
+        "name": "Data Structures",
+        "credits": 3,
+        "type": "core",
+        "description": "Study of data organization techniques.",
+        "prerequisites": ["CS101"]
+      },
+      "CS201": {
+        "name": "Algorithms",
+        "credits": 3,
+        "type": "core",
+        "description": "Algorithm design and analysis.",
+        "prerequisites": ["CS102"]
+      },
+      "MATH101": {
+        "name": "Calculus I",
+        "credits": 4,
+        "type": "math",
+        "description": "Differential and Integral Calculus.",
+        "prerequisites": []
+      },
+      "MATH201": {
+        "name": "Discrete Mathematics",
+        "credits": 3,
+        "type": "math",
+        "description": "Logic, sets, and combinatorics.",
+        "prerequisites": ["MATH101"]
+      }
+    }
+  }
+  
