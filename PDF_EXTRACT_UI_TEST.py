@@ -9,32 +9,48 @@ from tkinter import filedialog, messagebox
 import os
 
 # Function to extract classes taken with their assigned letter grade
+import pdfplumber
+
+import re
+import pytesseract
+from pdf2image import convert_from_path
+from PIL import Image
+
+import pdfplumber
+
 def extract_classes_and_grades(pdf_path):
+    class_pattern = re.compile(r'\b[A-Z]{3,4}\s?\d{4}[A-Z]?\b')
+    grade_pattern = re.compile(r'\b(A|A-|B\+|B|B-|C\+|C|C-|D\+|D|D-|F|S|U|W|IP)\b')
 
-    class_pattern = re.compile(r'\b[A-Z]{3}\s?\d{4}[A-Z]?\b')  # Course code pattern
-    grade_pattern = re.compile(r'\b(?:[A-F]|S|W|IP)\b')  # Grade pattern
+    passed, failed, inprog, extracted_data = [], [], [], {}
 
-    passed, failed, inprog, extracted_data= [], [], [], {}
-
-    with open(pdf_path, "rb") as file:
-        reader = PyPDF2.PdfReader(file)
-        for page in reader.pages:
+    with pdfplumber.open(pdf_path) as pdf:
+        for page_num, page in enumerate(pdf.pages):
             text = page.extract_text()
-            if text:
-                classes = class_pattern.findall(text)
-                grades = grade_pattern.findall(text)
+            if not text:
+                continue
 
-                for i, course in enumerate(classes):
-                    grade = grades[i] if i < len(grades) else "N/A"
-                    extracted_data[course] = grade
+            classes = class_pattern.findall(text)
+            grades = grade_pattern.findall(text)
 
-    for k, s in extracted_data.items(): # To create lists/ categorize from library
-        if s in ["A", "B", "C", "S"]:
+            print(f"Page {page_num + 1} — Classes found: {classes}")
+            print(f"Page {page_num + 1} — Grades found: {grades}")
+
+            for i, course in enumerate(classes):
+                grade = grades[i] if i < len(grades) else "N/A"
+                extracted_data[course] = grade
+
+    for k, s in extracted_data.items():
+        if s in ["A", "A-", "B+", "B", "B-", "C+", "C", "S"]:
             passed.append(k)
         elif s == "IP":
             inprog.append(k)
         else:
             failed.append(k)
+
+    if not extracted_data:
+        print("⚠️ Warning: No classes or grades extracted. Check if the transcript is a scanned image.")
+
 
     return extracted_data, passed, failed, inprog
 
