@@ -2,8 +2,7 @@
 import json
 import graphviz
 import re
-import os
-os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+
 # Load JSON from file
 with open("curriculum_full.json", "r") as f:
     courses = json.load(f)["courses"]
@@ -13,27 +12,19 @@ def make_alias(code, name):
     safe = re.sub(r'\W+', '_', name.strip())
     return f"{safe}_{code.replace(' ', '_')}"
 
-# Semester plan (update this mapping to control flowchart layout)
-semester_mapping = {
-    "MAC 2311": 0,
-    "EGN 3000": 0,
-    "EGN 3000L": 0,
-    "ENC 1101": 0,
-    "MAC 2312": 1,
-    "PHY 2048": 1,
-    "PHY 2048L": 1,
-    "ENC 1102": 1
-}
-
-# Generate aliases for all courses
+# Create aliases
 aliases = {code: make_alias(code, data["name"]) for code, data in courses.items()}
 
-# Filter valid semester entries
-valid_semester_mapping = {code: sem for code, sem in semester_mapping.items() if code in aliases}
+# Build semester mapping from JSON
+semester_mapping = {
+    code: data["semester"]
+    for code, data in courses.items()
+    if "semester" in data and data["semester"] is not None and code in aliases
+}
 
-# Build course dictionary for visualization
+# Build course dictionary with metadata
 course_dicts = {}
-for code in valid_semester_mapping:
+for code in semester_mapping:
     data = courses[code]
     alias = aliases[code]
     prereqs = [aliases[p] for p in data.get("prerequisites", []) if p in aliases and p != "NONE"]
@@ -44,19 +35,24 @@ for code in valid_semester_mapping:
         "type": "Major Core" if data["type"] == "required" else "General Core",
         "prereq": prereqs,
         "coreq": "N/A",
-        "completed": "Y" if valid_semester_mapping[code] == 0 else "N"
+        "completed": "Y" if semester_mapping[code] == 0 else "N",
+        "semester": semester_mapping[code]
     }
 
-# Schedule courses by semester
-schedule = [[] for _ in range(max(valid_semester_mapping.values()) + 1)]
-for code, sem in valid_semester_mapping.items():
+# Build schedule
+max_sem = max(semester_mapping.values(), default=0)
+schedule = [[] for _ in range(max_sem + 1)]
+for code, sem in semester_mapping.items():
     schedule[sem].append(aliases[code])
 
-# Generate flowchart
+# Create the flowchart with vertical layout
 dot = graphviz.Digraph("flowchart")
+dot.attr(rankdir="TB")
+
 for semester in range(len(schedule)):
     with dot.subgraph(name=f"cluster_{semester}") as sub:
         sub.attr(label=f"Semester {semester + 1}")
+        sub.attr(rank="same")
         for course_key in schedule[semester]:
             data = course_dicts[course_key]
             if data["completed"] == "Y":
@@ -70,10 +66,13 @@ for semester in range(len(schedule)):
 
             sub.node(course_key, data["abbrev"], style="filled", color=node_color)
 
-            for prereq in data["prereq"]:
-                dot.edge(prereq, course_key)
+# Add prerequisite edges, avoiding same-semester links
+for course_key, data in course_dicts.items():
+    for prereq in data["prereq"]:
+        if course_dicts[prereq]["semester"] != data["semester"]:
+            dot.edge(prereq, course_key)
 
-# Render flowchart to file
-dot.render("course_flowchart", format="png")
-print("Flowchart saved as course_flowchart.png")
+# Output the flowchart
+dot.render("vertical_course_flowchart", format="png")
+print("Flowchart saved as vertical_course_flowchart.png")
 

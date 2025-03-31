@@ -4,8 +4,9 @@
       "name": "Calculus 1",
       "credits": 4,
       "type": "required",
-      "description": "Explore key principles and applications in Calculus 1.",
-      "prerequisites": []
+      "description": "Explore key principles and applications in calculus 1.",
+      "prerequisites": [],
+      "semester": 0
     },
     "MAC 2312": {
       "name": "Calculus 2",
@@ -15,7 +16,8 @@
       "prerequisites": [
         "MAC 2281",
         "MAC 2311"
-      ]
+      ],
+      "semester": 1
     },
     "MAC 2313": {
       "name": "Calculus 3",
@@ -25,14 +27,16 @@
       "prerequisites": [
         "MAC 2282",
         "MAC 2312"
-      ]
+      ],
+      "semester": 2
     },
     "MAC 2281": {
       "name": "Engineering Calc 1",
       "credits": 4,
       "type": "required",
       "description": "Explore key principles and applications in engineering calc 1.",
-      "prerequisites": []
+      "prerequisites": [],
+      "semester": 0
     },
     "MAC 2282": {
       "name": "Engineering Calc 2",
@@ -42,7 +46,8 @@
       "prerequisites": [
         "MAC 2281",
         "MAC 2311"
-      ]
+      ],
+      "semester": 1
     },
     "MAC 2283": {
       "name": "Engineering Calc 3",
@@ -52,21 +57,8 @@
       "prerequisites": [
         "MAC 2282",
         "MAC 2312"
-      ]
-    },
-    "ENC 1101": {
-      "name": "Composition 1",
-      "credits": 3,
-      "type": "required",
-      "description": "Learn the concepts of writing at the college level.",
-      "prerequisites": []
-    },
-    "ENC 1102": {
-      "name": "Composition 2",
-      "credits": 3,
-      "type": "required",
-      "description": "Expand upon the concepts of writing at the college level.",
-      "prerequisites": []
+      ],
+      "semester": 2
     },
     "PHY 2048": {
       "name": "General Physics 1",
@@ -76,7 +68,8 @@
       "prerequisites": [
         "MAC 2281",
         "MAC 2311"
-      ]
+      ],
+      "semester": 1
     },
     "PHY 2048L": {
       "name": "General Physics 1 Lab",
@@ -86,7 +79,8 @@
       "prerequisites": [
         "MAC 2281",
         "MAC 2312"
-      ]
+      ],
+      "semester": 1
     },
     "CHM 2045": {
       "name": "General Chemistry 1",
@@ -96,7 +90,8 @@
       "prerequisites": [
         "MAC 2311",
         "MAC 2281"
-      ]
+      ],
+      "semester": 0
     },
     "CHM 2045L": {
       "name": "General Chemistry 1 Lab",
@@ -106,7 +101,8 @@
       "prerequisites": [
         "CHM 2045",
         "CHS 2440"
-      ]
+      ],
+      "semester": 0
     },
     "CHS 2440": {
       "name": "General Chemistry for Engineers",
@@ -116,7 +112,8 @@
       "prerequisites": [
         "MAC 2311",
         "MAC 2283"
-      ]
+      ],
+      "semester": 0
     },
     "CHS 2440L": {
       "name": "General Chemistry for Engineers Lab",
@@ -126,7 +123,8 @@
       "prerequisites": [
         "CHM 2045",
         "CHS 2440"
-      ]
+      ],
+      "semester": 0
     },
     "MAP 2302": {
       "name": "Differential Equations",
@@ -138,7 +136,8 @@
         "MAC 2312",
         "MAC 2283",
         "MAC 2313"
-      ]
+      ],
+      "semester": 3
     },
     "EGN 3433": {
       "name": "Modeling and Analysis of Engineering Systems",
@@ -150,7 +149,8 @@
         "MAC 2312",
         "MAC 2283",
         "MAC 2313"
-      ]
+      ],
+      "semester": 3
     },
     "EEE 3394": {
       "name": "EE Science 1 - Electronic Materials",
@@ -162,7 +162,8 @@
         "CHM 2045",
         "PHY 2048",
         "PHY 2060"
-      ]
+      ],
+      "semester": 2
     },
     "EEL 3472C": {
       "name": "EE Science 2 - Electromagnetics",
@@ -172,42 +173,48 @@
       "prerequisites": [
         "EGN 3420",
         "EEE 3394"
-      ]
+      ],
+      "semester": 3
     },
     "EGN 3000": {
       "name": "Foundations of Engineering",
       "credits": 0,
       "type": "required",
       "description": "Explore key principles and applications in foundations of engineering.",
-      "prerequisites": []
+      "prerequisites": [],
+      "semester": 0
     },
     "EGN 3000L": {
       "name": "Foundations of Engineering Lab",
       "credits": 3,
       "type": "required",
       "description": "Learn essential concepts and practices involved in foundations of engineering lab.",
-      "prerequisites": []
+      "prerequisites": [],
+      "semester": 0
     },
     "EGN 3443": {
       "name": "Prob and Stats for Engineers",
       "credits": 3,
       "type": "required",
       "description": "This course introduces major theories and methods related to prob and stats for engineers.",
-      "prerequisites": []
+      "prerequisites": [],
+      "semester": null
     },
     "EGN 3615": {
       "name": "Engineering Economics with Social and Global Implications",
       "credits": 3,
       "type": "required",
       "description": "Learn essential concepts and practices involved in engineering economics with social and global implications.",
-      "prerequisites": []
+      "prerequisites": [],
+      "semester": null
     },
     "ENC 3246": {
       "name": "Communication for Engineers",
       "credits": 3,
       "type": "required",
       "description": "A comprehensive look at the methods and tools used in communication for engineers.",
-      "prerequisites": []
+      "prerequisites": [],
+      "semester": null
     },
     "EEL 2161": {
       "name": "Programming with C",
@@ -216,7 +223,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in programming with c.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEL 3115L": {
       "name": "Lab 1",
@@ -225,7 +233,8 @@
       "description": "Focuses on both theoretical frameworks and real-world uses of lab 1.",
       "prerequisites": [
         "EGN 3373"
-      ]
+      ],
+      "semester": null
     },
     "EEL 3163C": {
       "name": "Computer Tool Lab",
@@ -234,7 +243,8 @@
       "description": "This course introduces major theories and methods related to computer tool lab.",
       "prerequisites": [
         "EEL 2161"
-      ]
+      ],
+      "semester": null
     },
     "EEL 3705": {
       "name": "Fundamentals of Digital Circuits",
@@ -243,7 +253,8 @@
       "description": "Investigate the role and significance of fundamentals of digital circuits in engineering and science.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEL 3705L": {
       "name": "Fundamentals of Digital Circuits Lab",
@@ -252,7 +263,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in fundamentals of digital circuits lab.",
       "prerequisites": [
         "EEL 3705"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4102": {
       "name": "Signals and Systems",
@@ -262,7 +274,8 @@
       "prerequisites": [
         "EGN 3420",
         "EGN 3374"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4835": {
       "name": "Programming Design",
@@ -271,7 +284,8 @@
       "description": "This course introduces major theories and methods related to programming design.",
       "prerequisites": [
         "EEL 2161"
-      ]
+      ],
+      "semester": null
     },
     "EGN 3373": {
       "name": "Electrical Systems 1",
@@ -281,7 +295,8 @@
       "prerequisites": [
         "EGN 3433",
         "MAP 2302"
-      ]
+      ],
+      "semester": null
     },
     "EGN 3374": {
       "name": "Intro to Electrical Systems 2",
@@ -290,7 +305,8 @@
       "description": "Learn essential concepts and practices involved in intro to electrical systems 2.",
       "prerequisites": [
         "EGN 3373"
-      ]
+      ],
+      "semester": null
     },
     "EGN 3420": {
       "name": "Engineering Analysis",
@@ -299,7 +315,8 @@
       "description": "Explore key principles and applications in engineering analysis.",
       "prerequisites": [
         "MAC 2282"
-      ]
+      ],
+      "semester": 3
     },
     "EGS 2070": {
       "name": "PFE 1",
@@ -308,7 +325,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in pfe 1.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EGS 3071": {
       "name": "PFE 2",
@@ -317,7 +335,8 @@
       "description": "Investigate the role and significance of pfe 2 in engineering and science.",
       "prerequisites": [
         "EGS 2070"
-      ]
+      ],
+      "semester": null
     },
     "EGS 3072": {
       "name": "PFE 3",
@@ -326,7 +345,8 @@
       "description": "Investigate the role and significance of pfe 3 in engineering and science.",
       "prerequisites": [
         "EGS 3071"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4906": {
       "name": "EE Design 1",
@@ -335,7 +355,8 @@
       "description": "An in-depth study focusing on the core aspects of ee design 1.",
       "prerequisites": [
         "SENIOR YEAR"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4914": {
       "name": "EE Design 2",
@@ -344,7 +365,8 @@
       "description": "This course introduces major theories and methods related to ee design 2.",
       "prerequisites": [
         "SENIOR YEAR"
-      ]
+      ],
+      "semester": null
     },
     "EGN 3375": {
       "name": "Electromechanical Systems",
@@ -353,7 +375,8 @@
       "description": "Develop essential techniques and understanding of electromechanical systems.",
       "prerequisites": [
         "EGN 3374"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4212": {
       "name": "Energy Delivery Systems",
@@ -362,7 +385,8 @@
       "description": "Learn essential concepts and practices involved in energy delivery systems.",
       "prerequisites": [
         "EEL 4241"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4214": {
       "name": "Electric Distribution Systems",
@@ -371,7 +395,8 @@
       "description": "Learn essential concepts and practices involved in electric distribution systems.",
       "prerequisites": [
         "EEL 4213"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4224": {
       "name": "Electric Machines and Drives",
@@ -381,7 +406,8 @@
       "prerequisites": [
         "EGN 3375",
         "EEL 4241"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4241": {
       "name": "Power Electronics",
@@ -391,7 +417,8 @@
       "prerequisites": [
         "EGN 3373",
         "EGN 3374"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4251": {
       "name": "Power System Analysis",
@@ -400,7 +427,8 @@
       "description": "Explore key principles and applications in power system analysis.",
       "prerequisites": [
         "EGN 3374. EGN 3375"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4252": {
       "name": "Power Systems II",
@@ -410,7 +438,8 @@
       "prerequisites": [
         "EGN 3375",
         "EEL 4102"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4271": {
       "name": "Power System Protection",
@@ -420,7 +449,8 @@
       "prerequisites": [
         "EGN 3375",
         "EEL 4213"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4283": {
       "name": "Sustainable Energy",
@@ -429,7 +459,8 @@
       "description": "Develop essential techniques and understanding of sustainable energy.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4295": {
       "name": "Power Quality",
@@ -438,7 +469,8 @@
       "description": "Investigate the role and significance of power quality in engineering and science.",
       "prerequisites": [
         "EGN 3375"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4206L": {
       "name": "Electromechanical Energy System Lab",
@@ -447,7 +479,8 @@
       "description": "This course introduces major theories and methods related to electromechanical energy system lab.",
       "prerequisites": [
         "EGN 3375"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4351C": {
       "name": "Semiconductor Devices",
@@ -456,7 +489,8 @@
       "description": "A comprehensive look at the methods and tools used in semiconductor devices.",
       "prerequisites": [
         "EEE 3394"
-      ]
+      ],
+      "semester": null
     },
     "EEE 3302": {
       "name": "Electronics 1",
@@ -465,7 +499,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in electronics 1.",
       "prerequisites": [
         "EGN 3373"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4274": {
       "name": "MEMS 1: Chemical/Biomedical Sensors and Microfabrication",
@@ -474,7 +509,8 @@
       "description": "An in-depth study focusing on the core aspects of mems 1: chemical/biomedical sensors and microfabrication.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4359": {
       "name": "Analog CMOS VLSI Design",
@@ -483,7 +519,8 @@
       "description": "Focuses on both theoretical frameworks and real-world uses of analog cmos vlsi design.",
       "prerequisites": [
         "EEE 3302"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4567": {
       "name": "Electro-Optics",
@@ -492,7 +529,8 @@
       "description": "Explore key principles and applications in electro-optics.",
       "prerequisites": [
         "EEL 3427C"
-      ]
+      ],
+      "semester": null
     },
     "EEL 3116L": {
       "name": "Lab 2",
@@ -502,7 +540,8 @@
       "prerequisites": [
         "EEE 3302",
         "EEL 3115L"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4657": {
       "name": "Linear Controls Systems",
@@ -511,7 +550,8 @@
       "description": "Develop essential techniques and understanding of linear controls systems.",
       "prerequisites": [
         "EEL 3472C"
-      ]
+      ],
+      "semester": null
     },
     "EEL 3100": {
       "name": "Network Analysis and Design",
@@ -521,7 +561,8 @@
       "prerequisites": [
         "EGN 3420",
         "EGN 3374"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4663": {
       "name": "Applied Robotics",
@@ -530,7 +571,8 @@
       "description": "Analyze practical and theoretical elements of applied robotics.",
       "prerequisites": [
         "EEL 4657"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4680": {
       "name": "Applied Mechatronics",
@@ -539,7 +581,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in applied mechatronics.",
       "prerequisites": [
         "EEL 4657"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4740": {
       "name": "Embedded Systems",
@@ -549,7 +592,8 @@
       "prerequisites": [
         "EEL 2162",
         "EEL 3705L"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4744": {
       "name": "Microprocessors Principles and Applications",
@@ -558,7 +602,8 @@
       "description": "Focuses on both theoretical frameworks and real-world uses of microprocessors principles and applications.",
       "prerequisites": [
         "EEL 3705"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4657L": {
       "name": "Linear Controls Lab",
@@ -567,7 +612,8 @@
       "description": "Focuses on both theoretical frameworks and real-world uses of linear controls lab.",
       "prerequisites": [
         "EEL 4657"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4743L": {
       "name": "Microprocessor Lab",
@@ -576,7 +622,8 @@
       "description": "An in-depth study focusing on the core aspects of microprocessor lab.",
       "prerequisites": [
         "EEL 4744"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4215": {
       "name": "Biomedical Optical Spectroscopy and Imaging",
@@ -585,7 +632,8 @@
       "description": "Analyze practical and theoretical elements of biomedical optical spectroscopy and imaging.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4260C": {
       "name": "Bioelectricity",
@@ -594,7 +642,8 @@
       "description": "A comprehensive look at the methods and tools used in bioelectricity.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4271": {
       "name": "Bioelectronics",
@@ -603,7 +652,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in bioelectronics.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4410": {
       "name": "System on a Chip",
@@ -612,7 +662,8 @@
       "description": "Develop essential techniques and understanding of system on a chip.",
       "prerequisites": [
         "EGN 3373"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4506": {
       "name": "Biomedical Image Processing",
@@ -621,7 +672,8 @@
       "description": "A comprehensive look at the methods and tools used in biomedical image processing.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4512C": {
       "name": "Intro to Communication Systems",
@@ -630,7 +682,8 @@
       "description": "Focuses on both theoretical frameworks and real-world uses of intro to communication systems.",
       "prerequisites": [
         "EEL 4102"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4423": {
       "name": "Quantum Computing and Communications",
@@ -640,7 +693,8 @@
       "prerequisites": [
         "EGN 3443",
         "EGN 3420"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4746": {
       "name": "Wireless Mobile Computing and Security",
@@ -649,7 +703,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in wireless mobile computing and security.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4423C": {
       "name": "Wireless Circuits and Systems Design Lab",
@@ -658,7 +713,8 @@
       "description": "Develop essential techniques and understanding of wireless circuits and systems design lab.",
       "prerequisites": [
         "EEL 3472C"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4540": {
       "name": "Radar Systems",
@@ -667,7 +723,8 @@
       "description": "Explore key principles and applications in radar systems.",
       "prerequisites": [
         "EEL 4423C"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4595": {
       "name": "Mobile and Personal Communication",
@@ -676,7 +733,8 @@
       "description": "Explore key principles and applications in mobile and personal communication.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4727C": {
       "name": "Digital Signal Processing with Field Programmable",
@@ -686,7 +744,8 @@
       "prerequisites": [
         "EEL 4102",
         "EEL 4512C"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4756": {
       "name": "Digital Signal Processing",
@@ -695,7 +754,8 @@
       "description": "An in-depth study focusing on the core aspects of digital signal processing.",
       "prerequisites": [
         "EEL 4102"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4513L": {
       "name": "Wireless Communication Systems Lab",
@@ -705,7 +765,8 @@
       "prerequisites": [
         "EEL 4512C",
         "EEL 4423C"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4743L ": {
       "name": "Microprocessor Lab",
@@ -714,7 +775,8 @@
       "description": "Explore key principles and applications in microprocessor lab.",
       "prerequisites": [
         "EEL 4744"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4420": {
       "name": "RF and Microwave Measurements",
@@ -723,7 +785,8 @@
       "description": "Develop essential techniques and understanding of rf and microwave measurements.",
       "prerequisites": [
         "EEL 4423L"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4421": {
       "name": "RF/Microwave Circuits 1",
@@ -732,7 +795,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in rf/microwave circuits 1.",
       "prerequisites": [
         "EEL 4423C"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4422": {
       "name": "RF/Microwave Circuits 2",
@@ -741,7 +805,8 @@
       "description": "A comprehensive look at the methods and tools used in rf/microwave circuits 2.",
       "prerequisites": [
         "EEL 4421"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4461": {
       "name": "Antenna Theory",
@@ -751,7 +816,8 @@
       "prerequisites": [
         "EEL 3472C",
         "EEL 4423C"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4748": {
       "name": "Cryptography and Data Security",
@@ -760,7 +826,8 @@
       "description": "Gain foundational knowledge and problem-solving skills in cryptography and data security.",
       "prerequisites": [
         "NONE"
-      ]
+      ],
+      "semester": null
     },
     "EEE 4774": {
       "name": "Data Analytics",
@@ -769,7 +836,8 @@
       "description": "Learn essential concepts and practices involved in data analytics.",
       "prerequisites": [
         "EGN 3443"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4782": {
       "name": "Data Networks and Systems and Security",
@@ -778,7 +846,8 @@
       "description": "A comprehensive look at the methods and tools used in data networks and systems and security.",
       "prerequisites": [
         "EEL 2161"
-      ]
+      ],
+      "semester": null
     },
     "EEL 4872": {
       "name": "AI and Security in Cyber Physical Systems",
@@ -787,7 +856,8 @@
       "description": "Investigate the role and significance of ai and security in cyber physical systems in engineering and science.",
       "prerequisites": [
         "EEL 4835"
-      ]
+      ],
+      "semester": null
     }
   }
 }
