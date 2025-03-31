@@ -54,6 +54,20 @@
         "MAC 2312"
       ]
     },
+    "ENC 1101": {
+      "name": "Composition 1",
+      "credits": 3,
+      "type": "required",
+      "description": "Learn the concepts of writing at the college level.",
+      "prerequisites": []
+    },
+    "ENC 1102": {
+      "name": "Composition 2",
+      "credits": 3,
+      "type": "required",
+      "description": "Expand upon the concepts of writing at the college level.",
+      "prerequisites": []
+    },
     "PHY 2048": {
       "name": "General Physics 1",
       "credits": 3,
