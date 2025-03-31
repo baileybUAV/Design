@@ -1,0 +1,79 @@
+
+import json
+import graphviz
+import re
+import os
+os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+# Load JSON from file
+with open("curriculum_full.json", "r") as f:
+    courses = json.load(f)["courses"]
+
+# Generate safe aliases for course codes
+def make_alias(code, name):
+    safe = re.sub(r'\W+', '_', name.strip())
+    return f"{safe}_{code.replace(' ', '_')}"
+
+# Semester plan (update this mapping to control flowchart layout)
+semester_mapping = {
+    "MAC 2311": 0,
+    "EGN 3000": 0,
+    "EGN 3000L": 0,
+    "ENC 1101": 0,
+    "MAC 2312": 1,
+    "PHY 2048": 1,
+    "PHY 2048L": 1,
+    "ENC 1102": 1
+}
+
+# Generate aliases for all courses
+aliases = {code: make_alias(code, data["name"]) for code, data in courses.items()}
+
+# Filter valid semester entries
+valid_semester_mapping = {code: sem for code, sem in semester_mapping.items() if code in aliases}
+
+# Build course dictionary for visualization
+course_dicts = {}
+for code in valid_semester_mapping:
+    data = courses[code]
+    alias = aliases[code]
+    prereqs = [aliases[p] for p in data.get("prerequisites", []) if p in aliases and p != "NONE"]
+    course_dicts[alias] = {
+        "name": alias,
+        "abbrev": data["name"],
+        "course": code,
+        "type": "Major Core" if data["type"] == "required" else "General Core",
+        "prereq": prereqs,
+        "coreq": "N/A",
+        "completed": "Y" if valid_semester_mapping[code] == 0 else "N"
+    }
+
+# Schedule courses by semester
+schedule = [[] for _ in range(max(valid_semester_mapping.values()) + 1)]
+for code, sem in valid_semester_mapping.items():
+    schedule[sem].append(aliases[code])
+
+# Generate flowchart
+dot = graphviz.Digraph("flowchart")
+for semester in range(len(schedule)):
+    with dot.subgraph(name=f"cluster_{semester}") as sub:
+        sub.attr(label=f"Semester {semester + 1}")
+        for course_key in schedule[semester]:
+            data = course_dicts[course_key]
+            if data["completed"] == "Y":
+                sub.attr("node", fontcolor="green")
+
+            node_color = {
+                "General Core": "lightblue",
+                "Major Core": "firebrick3",
+                "Engineering Core": "darkgoldenrod1"
+            }.get(data["type"], "white")
+
+            sub.node(course_key, data["abbrev"], style="filled", color=node_color)
+
+            for prereq in data["prereq"]:
+                dot.edge(prereq, course_key)
+
+# Render flowchart to file
+dot.render("course_flowchart", format="png")
+print("Flowchart saved as course_flowchart.png")
+

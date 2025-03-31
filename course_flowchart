@@ -1,0 +1,26 @@
+digraph flowchart {
+	subgraph cluster_0 {
+		label="Semester 1"
+		node [fontcolor=green]
+		Calculus_1_MAC_2311 [label="Calculus 1" color=firebrick3 style=filled]
+		node [fontcolor=green]
+		Foundations_of_Engineering_EGN_3000 [label="Foundations of Engineering" color=firebrick3 style=filled]
+		node [fontcolor=green]
+		Foundations_of_Engineering_Lab_EGN_3000L [label="Foundations of Engineering Lab" color=firebrick3 style=filled]
+		node [fontcolor=green]
+		Composition_1_ENC_1101 [label="Composition 1" color=firebrick3 style=filled]
+	}
+	Engineering_Calc_1_MAC_2281 -> Calculus_2_MAC_2312
+	Calculus_1_MAC_2311 -> Calculus_2_MAC_2312
+	Engineering_Calc_1_MAC_2281 -> General_Physics_1_PHY_2048
+	Calculus_1_MAC_2311 -> General_Physics_1_PHY_2048
+	Engineering_Calc_1_MAC_2281 -> General_Physics_1_Lab_PHY_2048L
+	Calculus_2_MAC_2312 -> General_Physics_1_Lab_PHY_2048L
+	subgraph cluster_1 {
+		label="Semester 2"
+		Calculus_2_MAC_2312 [label="Calculus 2" color=firebrick3 style=filled]
+		General_Physics_1_PHY_2048 [label="General Physics 1" color=firebrick3 style=filled]
+		General_Physics_1_Lab_PHY_2048L [label="General Physics 1 Lab" color=firebrick3 style=filled]
+		Composition_2_ENC_1102 [label="Composition 2" color=firebrick3 style=filled]
+	}
+}
