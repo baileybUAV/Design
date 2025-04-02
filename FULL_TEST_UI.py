@@ -3,8 +3,9 @@ import webbrowser as wb
 from tkinter import messagebox, filedialog
 import re
 import json
-import PyPDF2
 import os
+import pdfplumber
+
 
 #==================================================================================================
 #User Defined Functions and Setup
@@ -33,6 +34,16 @@ def show_selection(option):
         progress_window.title("Help")
         app = HelpPage(progress_window)
 
+    elif option == "Planning Tools":
+        progress_window = tk.Toplevel(root)
+        progress_window.title("Planning Tools")
+        app = Sch_Maker(progress_window)
+
+    elif option == "Progress Tracking":
+        progress_window = tk.Toplevel(root)
+        progress_window.title("Progress Tracking")
+        app = Progress(progress_window)
+
     elif option == "Pre-Advising Checklist":
         progress_window = tk.Toplevel(root)
         progress_window.title("Pre-Advising Checklist")
@@ -44,7 +55,6 @@ def show_selection(option):
         root.destroy()
 
 #Grade and class extractor from the PDF file
-import pdfplumber
 
 def extract_classes_and_grades(pdf_path):
     class_pattern = re.compile(r'\b[A-Z]{3,4}\s?\d{4}[A-Z]?\b')
@@ -68,14 +78,6 @@ def extract_classes_and_grades(pdf_path):
                 grade = grades[i] if i < len(grades) else "N/A"
                 extracted_data[course] = grade
 
-    for k, s in extracted_data.items():
-        if s in ["A", "A-", "B+", "B", "B-", "C+", "C", "S"]:
-            passed.append(k)
-        elif s == "IP":
-            inprog.append(k)
-        else:
-            failed.append(k)
-
     if not extracted_data:
         print("⚠️ Warning: No classes or grades extracted. Check if the transcript is a scanned image.")
 
@@ -86,7 +88,7 @@ def extract_classes_and_grades(pdf_path):
 def Read_Json_Grades(JSON_data): 
     passed, failed, inprog = [], [], []
     for k, s in JSON_data.items():
-        if s in ["A", "B", "C", "S"]:
+        if s in ["A", "A-", "B+", "B", "B-", "C+", "C", "S"]:
             passed.append(k)
         elif s == "IP":
             inprog.append(k)
@@ -94,15 +96,135 @@ def Read_Json_Grades(JSON_data):
             failed.append(k)
     return passed, failed, inprog
 
-data, passed, failed, inprog = {}, [], [], []
+data, passed, failed, inprog = {}, [], [], []  # Initialize empty Variables
+
+#==================================================================================================
+#Class for progress checker
+
+class Progress:
+    def __init__(self, root):
+        self.root = root
+        root.title("Progress Checker")
+        root.geometry("700x700")
+
+        # Title Label
+        self.title_label = tk.Label(root, text="Current Progress Until Now", font=("Arial", 14, "bold"), wraplength=600)
+        self.title_label.pack(pady=10)
+
+        # Create a frame for the scrollable canvas
+        self.frame = tk.Frame(root)
+        self.frame.pack(fill=tk.BOTH, expand=True)
+        
+        self.canvas = tk.Canvas(self.frame)
+        self.scrollbar = tk.Scrollbar(self.frame, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = tk.Frame(self.canvas)
+
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scrollbar.pack(side="right", fill="y")
+        
+        # Import and display previous classes
+        creds = 0
+
+        with open("curriculum_full.json", "r") as file:
+            data = json.load(file)  # Load JSON data
+        
+        with open("classes_with_grades.json", "r") as file2:
+            datat = json.load(file2)
+        
+        passed, failed, inprog = Read_Json_Grades(datat) 
+        courses_data = data.get("courses", {})
+        
+        for course_code, course_info in courses_data.items():
+            if course_code in passed or course_code in inprog:
+                course_label = tk.Label(self.scrollable_frame, text=f"Code: {course_code}       Name: {course_info['name']}     Grade:  {datat[course_code]}")
+                course_label.pack(pady=2, anchor="center")
+                creds += int(course_info.get("credits", 0))
+
+        self.total_credits = tk.Label(root, text=f"The total Credits applied: {creds}", font=("Arial", 14, "bold"), wraplength=600)
+        self.total_credits.pack(pady=10)
+
+        # Back Button
+        self.ok_button = tk.Button(root, text="Back", command=self.confirm_selection, font=("Arial", 14), width=4, height=1)
+        self.ok_button.pack(pady=20)
+    
+    def confirm_selection(self):
+        self.root.destroy()
+
+#==================================================================================================
+#Class for manual schedule maker
+class Sch_Maker:
+    def __init__(self, root):
+        self.root = root
+        root.title("Schedule Selector")
+        root.geometry("600x600")
+
+        # Title Label
+        self.title_label = tk.Label(root, text="Manual Schedule Selection", font=("Arial", 14, "bold"), wraplength=600)
+        self.title_label.pack(pady=10)
+
+        # Create a frame for the scrollable canvas and add a scrollbar
+        self.canvas = tk.Canvas(root)
+        self.scrollbar = tk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.scrollable_frame = tk.Frame(self.canvas)
+
+        # Add the scrollable frame to the canvas window
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        # Pack the canvas and scrollbar
+        self.canvas.pack(side="left", fill="both")
+        self.scrollbar.pack(side="right", fill="y")
+
+        # Add a button to add classes
+        self.button = tk.Button(root, text="Add Classes", font=("Arial", 12), command=self.add_class)
+        self.button.pack(pady=5)
+
+        # Update scroll region when the content is added
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        )
+
+    def show_details(self, course_name):
+        # Updates label with the selected course name.
+        print(f"Selected Course: {course_name}")
+
+    def add_class(self):
+        # Loads courses from JSON and creates buttons dynamically.
+        with open("curriculum_full.json", "r") as file:
+            data = json.load(file)  # Load JSON data
+
+        with open("classes_with_grades.json", "r") as file2:
+            datat = json.load(file2)
+        passed, failed, inprog = Read_Json_Grades(datat) 
+
+        courses_data = datat.get("courses", {})
+
+        # Create buttons for each course and add them to the scrollable frame
+        for course_code, course_info in courses_data.items():
+            if course_code not in passed and course_code not in inprog:
+                button = tk.Button(self.scrollable_frame, text=course_info["name"],
+                                    command=lambda name=course_info["name"]: self.show_details(name))
+                button.pack(pady=5)
 
 #==================================================================================================
 #Class for pre-advising checklist
 class Pre_Advising:
     def __init__(self, root):
         self.root = root
-        self.root.title("Pre-Advising Checklist")
-        self.root.geometry("600x600")
+        root.title("Pre-Advising Checklist")
+        root.geometry("600x600")
 
         # Title Label
         self.title_label = tk.Label(root, text="Pre-Advising Checklist", font=("Arial", 14, "bold"), wraplength=600)
@@ -347,7 +469,7 @@ class FileUploader:
 
         # Checkbox to use previous data
         self.use_previous_data = tk.BooleanVar(value=bool(data))  # Default to True if data exists
-        self.checkbox = tk.Checkbutton(root, text="Use previous data", variable=self.use_previous_data, command=self.toggle_file_selection)
+        self.checkbox = tk.Checkbutton(root, text="Use previous data", variable=self.use_previous_data, command=self.toggle_file_selection, state=tk.NORMAL if os.path.exists("classes_with_grades.json") else tk.DISABLED)
         self.checkbox.pack(pady=10)
 
         # Upload button
