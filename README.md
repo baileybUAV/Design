@@ -62,7 +62,7 @@ This project provides the functionality listed below:
 ### Library Requirements
 
 - Graphviz (graphing)
-- PyPDF2 (transcript reading)
+- pdfplumber (transcript reading)
 
 Other used libraries that are included in Python's Standard Library or are installed with Python 3.x, and so do not need to be installed:
 
@@ -86,15 +86,15 @@ Click the *graphviz-12.2.0 64-bit EXE installer* to start the download. Run the 
 
 In install options, select *Add Graphviz to the system PATH for all users* and click next. Make sure the Destination Folder is placed within the Program Files folder, click next, and click install.
 
-#### 2. Installing PyPDF2
-PyPDF2 can be installed using pip by opening the command prompt and typing the following command:
+#### 2. Installing pdfplumber
+pdfplumber can be installed using pip by opening the command prompt and typing the following command:
 ```
-pip install PyPDF2
+pip install pdfplumber
 ```
 
 ### Executing program
 
-To start the application, run the FULL_TEST_UI.py python file.
+To start the application, run the FULL_PROGRAM_UI.py python file. Make sure to use the Transcript Parser to upload your transcript before using the rest of the Curriculum Helper's functionality.
 
 ## Help
 
