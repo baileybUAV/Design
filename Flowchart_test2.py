@@ -1,78 +1,63 @@
-
 import json
 import graphviz
-import re
 
-# Load JSON from file
-with open("curriculum_full.json", "r") as f:
-    courses = json.load(f)["courses"]
+# ----------------------------
+# Load classes_with_grades.json
+# ----------------------------
+with open("classes_with_grades.json", "r") as f:
+    data = json.load(f)
 
-# Generate safe aliases for course codes
-def make_alias(code, name):
-    safe = re.sub(r'\W+', '_', name.strip())
-    return f"{safe}_{code.replace(' ', '_')}"
+# ----------------------------
+# Group courses by term
+# ----------------------------
+term_groups = {}
+for course_code, info in data.items():
+    term = info.get("term", "Unknown")
+    term_groups.setdefault(term, []).append(course_code)
 
-# Create aliases
-aliases = {code: make_alias(code, data["name"]) for code, data in courses.items()}
+# ----------------------------
+# Sort terms chronologically
+# ----------------------------
+def term_sort_key(term):
+    parts = term.split()
+    if len(parts) == 2:
+        season, year = parts
+        season_order = {"Spring": 1, "Summer": 2, "Fall": 3}
+        return (int(year), season_order.get(season, 0))
+    return (9999, 0)
 
-# Build semester mapping from JSON
-semester_mapping = {
-    code: data["semester"]
-    for code, data in courses.items()
-    if "semester" in data and data["semester"] is not None and code in aliases
-}
+sorted_terms = sorted(term_groups.keys(), key=term_sort_key)
 
-# Build course dictionary with metadata
-course_dicts = {}
-for code in semester_mapping:
-    data = courses[code]
-    alias = aliases[code]
-    prereqs = [aliases[p] for p in data.get("prerequisites", []) if p in aliases and p != "NONE"]
-    course_dicts[alias] = {
-        "name": alias,
-        "abbrev": data["name"],
-        "course": code,
-        "type": "Major Core" if data["type"] == "required" else "General Core",
-        "prereq": prereqs,
-        "coreq": "N/A",
-        "completed": "Y" if semester_mapping[code] == 0 else "N",
-        "semester": semester_mapping[code]
-    }
-
-# Build schedule
-max_sem = max(semester_mapping.values(), default=0)
-schedule = [[] for _ in range(max_sem + 1)]
-for code, sem in semester_mapping.items():
-    schedule[sem].append(aliases[code])
-
-# Create the flowchart with vertical layout
+# ----------------------------
+# Create Graphviz flowchart
+# ----------------------------
 dot = graphviz.Digraph("flowchart")
-dot.attr(rankdir="TB")
+dot.attr(rankdir="TB")  # Top to bottom
 
-for semester in range(len(schedule)):
-    with dot.subgraph(name=f"cluster_{semester}") as sub:
-        sub.attr(label=f"Semester {semester + 1}")
+previous_term = None
+term_anchor_nodes = []
+
+for i, term in enumerate(sorted_terms):
+    with dot.subgraph(name=f"cluster_{term.replace(' ', '_')}") as sub:
+        sub.attr(label=term)
+        sub.attr(style="rounded")
         sub.attr(rank="same")
-        for course_key in schedule[semester]:
-            data = course_dicts[course_key]
-            if data["completed"] == "Y":
-                sub.attr("node", fontcolor="green")
 
-            node_color = {
-                "General Core": "lightblue",
-                "Major Core": "firebrick3",
-                "Engineering Core": "darkgoldenrod1"
-            }.get(data["type"], "white")
+        # Add anchor node for centering
+        anchor_id = f"anchor_{i}"
+        sub.node(anchor_id, label="", shape="point", width="0", height="0", style="invis")
+        term_anchor_nodes.append(anchor_id)
 
-            sub.node(course_key, data["abbrev"], style="filled", color=node_color)
+        # Add course nodes
+        for course_code in term_groups[term]:
+            sub.node(course_code, label=course_code, style="filled", color="lightblue")
 
-# Add prerequisite edges, avoiding same-semester links
-for course_key, data in course_dicts.items():
-    for prereq in data["prereq"]:
-        if course_dicts[prereq]["semester"] != data["semester"]:
-            dot.edge(prereq, course_key)
+# Create invisible vertical chain to stack anchors and force vertical alignment
+for i in range(len(term_anchor_nodes) - 1):
+    dot.edge(term_anchor_nodes[i], term_anchor_nodes[i + 1], style="invis", weight="100")
 
-# Output the flowchart
-dot.render("vertical_course_flowchart", format="png")
-print("Flowchart saved as vertical_course_flowchart.png")
-
+# ----------------------------
+# Output PNG file
+# ----------------------------
+dot.render("transcript_semester_flowchart", format="png", cleanup=True)
+print("✅ Flowchart saved as transcript_semester_flowchart.png")
