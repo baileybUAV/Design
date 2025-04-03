@@ -123,9 +123,9 @@ def extract_classes_and_grades(pdf_path):
 def Read_Json_Grades(JSON_data): 
     passed, failed, inprog = [], [], []
     for k, s in JSON_data.items():
-        if s in ["A", "A-", "B+", "B", "B-", "C+", "C", "S"]:
+        if s['grade'] in ["A", "A-", "B+", "B", "B-", "C+", "C", "S"]:
             passed.append(k)
-        elif s == "IP":
+        elif s['grade'] == "IP":
             inprog.append(k)
         else:
             failed.append(k)
@@ -188,7 +188,7 @@ class Progress:
         
         for course_code, course_info in courses_data.items():
             if course_code in passed or course_code in inprog:
-                course_label = tk.Label(self.scrollable_frame, text=f"Code: {course_code}       Name: {course_info['name']}     Grade:  {datat[course_code]}")
+                course_label = tk.Label(self.scrollable_frame, text=f"Code: {course_code}       Name: {course_info['name']}\nGrade:  {datat[course_code]['grade']}       Term: {datat[course_code]['term']} \n\n")
                 course_label.pack(pady=2, anchor="center")
                 creds += int(course_info.get("credits", 0))
 
