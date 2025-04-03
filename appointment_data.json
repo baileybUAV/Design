@@ -1,8 +1,7 @@
 {
-    "Level": "Lower",
-    "Phone Number": "AAAAAAAAAA",
-    "Campus": "AAAAAAAAAAA",
-    "College": "AAAAAAAAAAAAA",
-    "Major": "AAAAAAAAAA",
-    "Reason": "AAAAAAAAA"
+    "Level": "Upper",
+    "Name": "Graham Taylor",
+    "Email": "grahamtaylor@usf.edu",
+    "UID": "12345678910",
+    "Reason": "Questions about classes. Summer class questions."
 }
