@@ -577,7 +577,7 @@ class Pre_Advising:
         self.rembr = None
 
         # Back Button
-        self.ok_button = tk.Button(root, text="Save and return", command=self.confirm_selection, font=("Arial", 14, "bold"), width=20, height=2)
+        self.ok_button = tk.Button(root, text="Back", command=self.confirm_selection, font=("Arial", 14, "bold"), width=20, height=2)
         self.ok_button.pack(pady=20)
     
     def toggle(self):
