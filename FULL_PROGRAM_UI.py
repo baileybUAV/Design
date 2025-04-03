@@ -8,9 +8,9 @@ import pdfplumber
 
 
 #==================================================================================================
-#User Defined Functions and Setup
+# User Defined Functions and Setup
 
-#Checking if the previous file for new classes exists
+# Checking if the previous file for new classes exists
 global data3
 
 try:
@@ -19,7 +19,7 @@ try:
 except FileNotFoundError:
     data3 = []
 
-#Function that refreshes UI (checking if the transcript JSON file exists)
+# Function that refreshes UI (checking if the transcript JSON file exists)
 def refresh_ui():
     
     file_exists = os.path.exists("classes_with_grades.json")
@@ -30,7 +30,7 @@ def refresh_ui():
 
     root.after(3000, refresh_ui)  # Check again every 3 seconds
 
-#Opens windows for each selected option (only finished options implemented at the moment)
+# Opens windows for each selected option (only finished options implemented at the moment)
 def show_selection(option):
     selection_label.config(text=f"Previous Selection: {option}")
     if option == "Transcript Parser":
@@ -63,7 +63,7 @@ def show_selection(option):
         progress_window.title("Help")
         root.destroy()
 
-#Grade and class extractor from the PDF file
+# Grade and class extractor from the PDF file
 
 def extract_classes_and_grades(pdf_path):
     class_pattern = re.compile(r'\b[A-Z]{3,4}\s?\d{4}[A-Z]?\b')
@@ -93,7 +93,7 @@ def extract_classes_and_grades(pdf_path):
 
     return extracted_data, passed, failed, inprog
 
-#Reads Json file and outputs lists from the data
+# Reads Json file and outputs lists from the data
 def Read_Json_Grades(JSON_data): 
     passed, failed, inprog = [], [], []
     for k, s in JSON_data.items():
@@ -108,7 +108,7 @@ def Read_Json_Grades(JSON_data):
 data, passed, failed, inprog = {}, [], [], []  # Initialize empty Variables
 
 #==================================================================================================
-#Class for progress checker
+# Class for progress checker
 class Progress:
     def __init__(self, root):
         self.root = root
@@ -177,7 +177,7 @@ class Progress:
         self.root.destroy()
 
 #==================================================================================================
-#Class for manual schedule maker
+# Class for manual schedule maker
 class Sch_Maker:
     def __init__(self, root):
         self.root = root
@@ -484,7 +484,7 @@ class Sch_Maker:
         
 
 #==================================================================================================
-#Class for pre-advising checklist
+# Class for pre-advising checklist
 class Pre_Advising:
     def __init__(self, root):
         self.root = root
@@ -551,7 +551,7 @@ class Pre_Advising:
         self.rembr = None
 
         # Back Button
-        self.ok_button = tk.Button(root, text="Back", command=self.confirm_selection, font=("Arial", 14), width=4, height=1)
+        self.ok_button = tk.Button(root, text="Save and return", command=self.confirm_selection, font=("Arial", 14, "bold"), width=20, height=2)
         self.ok_button.pack(pady=20)
     
     def toggle(self):
@@ -653,7 +653,7 @@ class Pre_Advising:
         self.root.destroy()
 
 #==================================================================================================
-#Class for help page
+# Class for help page
 class HelpPage:
     def __init__(self, root):
         self.root = root
@@ -725,7 +725,7 @@ class HelpPage:
 
 
 #==================================================================================================
-#Class for page to upload pdf to create JSON file
+# Class for page to upload pdf to create JSON file
 class FileUploader:
     def __init__(self, root):
         self.root = root
@@ -801,7 +801,7 @@ class FileUploader:
         self.root.destroy()
 
 #==================================================================================================
-#Root Page Code
+# Root Page Code
 
 root = tk.Tk()
 root.title("Electrical Engineering Course Planning Tool")
