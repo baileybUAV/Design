@@ -1,48 +1,186 @@
 {
-    "EGN 4930": "S",
-    "SYG 2000": "A",
-    "MAC 1114": "B",
-    "MAC 1140": "A",
-    "CHM 2045": "C",
-    "CHM 2045L": "B",
-    "EGN 3000": "S",
-    "EGN 3000L": "A",
-    "MAC 2281": "B",
-    "EEL 3705": "C",
-    "ENC 1101": "A",
-    "PHI 2010": "A",
-    "EEL 3705L": "A",
-    "ENC 1102": "A",
-    "MAC 2282": "A",
-    "PHY 1048L": "A",
-    "PHY 2048": "A",
-    "EEL 2161": "B",
-    "EGN 3615": "C",
-    "EEE 3394": "B",
-    "EGN 3420": "B",
-    "MAC 2313": "A",
-    "ENC 3246": "A",
-    "EEL 3472C": "B",
-    "EGN 3373": "B",
-    "EGN 3443": "B",
-    "MAP 2302": "A",
-    "EEE 4351C": "B",
-    "EEL 3163C": "A",
-    "EEL 4102": "A",
-    "EGN 3374": "A",
-    "EGS 2070": "A",
-    "EGS 3071": "A",
-    "EEE 3302": "A",
-    "EGN 3375": "A",
-    "EEE 4314C": "B",
-    "EEL 3115L": "A",
-    "EEL 4271": "A",
-    "EEL 4512C": "A",
-    "EEL 4782": "A",
-    "EGS 3072": "A",
-    "EEL 4206L": "IP",
-    "EEL 4241": "IP",
-    "EEL 4423C": "IP",
-    "EEL 4835": "IP",
-    "EEL 4906": "IP"
+    "EGN 4930": {
+        "grade": "S",
+        "term": "Unknown"
+    },
+    "SYG 2000": {
+        "grade": "A",
+        "term": "Unknown"
+    },
+    "MAC 1114": {
+        "grade": "B",
+        "term": "Fall 2020"
+    },
+    "MAC 1140": {
+        "grade": "A",
+        "term": "Fall 2020"
+    },
+    "CHM 2045": {
+        "grade": "C",
+        "term": "Spring 2021"
+    },
+    "CHM 2045L": {
+        "grade": "B+",
+        "term": "Spring 2021"
+    },
+    "EGN 3000": {
+        "grade": "S",
+        "term": "Spring 2021"
+    },
+    "EGN 3000L": {
+        "grade": "A",
+        "term": "Spring 2021"
+    },
+    "MAC 2281": {
+        "grade": "B",
+        "term": "Fall 2021"
+    },
+    "EEL 3705": {
+        "grade": "C",
+        "term": "Fall 2021"
+    },
+    "ENC 1101": {
+        "grade": "A-",
+        "term": "Fall 2021"
+    },
+    "PHI 2010": {
+        "grade": "A-",
+        "term": "Fall 2021"
+    },
+    "EEL 3705L": {
+        "grade": "A",
+        "term": "Spring 2022"
+    },
+    "ENC 1102": {
+        "grade": "A+",
+        "term": "Spring 2022"
+    },
+    "MAC 2282": {
+        "grade": "B",
+        "term": "Fall 2022"
+    },
+    "PHY 1048L": {
+        "grade": "A",
+        "term": "Spring 2022"
+    },
+    "PHY 2048": {
+        "grade": "A",
+        "term": "Spring 2022"
+    },
+    "EEL 2161": {
+        "grade": "B",
+        "term": "Fall 2022"
+    },
+    "EGN 3615": {
+        "grade": "A",
+        "term": "Fall 2022"
+    },
+    "EEE 3394": {
+        "grade": "B",
+        "term": "Spring 2023"
+    },
+    "EGN 3420": {
+        "grade": "A",
+        "term": "Spring 2023"
+    },
+    "MAC 2313": {
+        "grade": "B+",
+        "term": "Spring 2023"
+    },
+    "ENC 3246": {
+        "grade": "A+",
+        "term": "Spring 2023"
+    },
+    "EEL 3472C": {
+        "grade": "B",
+        "term": "Fall 2023"
+    },
+    "EGN 3373": {
+        "grade": "B",
+        "term": "Fall 2023"
+    },
+    "EGN 3443": {
+        "grade": "B",
+        "term": "Fall 2023"
+    },
+    "MAP 2302": {
+        "grade": "A",
+        "term": "Fall 2023"
+    },
+    "EEE 4351C": {
+        "grade": "B",
+        "term": "Spring 2024"
+    },
+    "EEL 3163C": {
+        "grade": "A",
+        "term": "Spring 2024"
+    },
+    "EEL 4102": {
+        "grade": "A",
+        "term": "Spring 2024"
+    },
+    "EGN 3374": {
+        "grade": "A",
+        "term": "Spring 2024"
+    },
+    "EGS 2070": {
+        "grade": "A",
+        "term": "Spring 2024"
+    },
+    "EGS 3071": {
+        "grade": "A",
+        "term": "Spring 2024"
+    },
+    "EEE 3302": {
+        "grade": "A",
+        "term": "Spring 2024"
+    },
+    "EGN 3375": {
+        "grade": "A",
+        "term": "Spring 2024"
+    },
+    "EEE 4314C": {
+        "grade": "B",
+        "term": "Fall 2024"
+    },
+    "EEL 3115L": {
+        "grade": "A",
+        "term": "Fall 2024"
+    },
+    "EEL 4271": {
+        "grade": "A",
+        "term": "Fall 2024"
+    },
+    "EEL 4512C": {
+        "grade": "A",
+        "term": "Fall 2024"
+    },
+    "EEL 4782": {
+        "grade": "A",
+        "term": "Fall 2024"
+    },
+    "EGS 3072": {
+        "grade": "A",
+        "term": "Fall 2024"
+    },
+    "EEL 4206L": {
+        "grade": "IP",
+        "term": "Spring 2025"
+    },
+    "EEL 4241": {
+        "grade": "IP",
+        "term": "Spring 2025"
+    },
+    "EEL 4423C": {
+        "grade": "IP",
+        "term": "Spring 2025"
+    },
+    "EEL 4835": {
+        "grade": "IP",
+        "term": "Spring 2025"
+    },
+    "EEL 4906": {
+        "grade": "IP",
+        "term": "Spring 2025"
+    }
 }

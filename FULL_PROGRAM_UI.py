@@ -66,10 +66,15 @@ def show_selection(option):
 # Grade and class extractor from the PDF file
 
 def extract_classes_and_grades(pdf_path):
-    class_pattern = re.compile(r'\b[A-Z]{3,4}\s?\d{4}[A-Z]?\b')
-    grade_pattern = re.compile(r'\b(A|A-|B\+|B|B-|C\+|C|C-|D\+|D|D-|F|S|U|W|IP)\b')
+    import pdfplumber
+    import re
 
-    passed, failed, inprog, extracted_data = [], [], [], {}
+    class_pattern = re.compile(r'\b[A-Z]{3,4}\s?\d{4}[A-Z]?\b')
+    term_pattern = re.compile(r'(Spring|Summer|Fall)\s20\d{2}')
+    valid_grades = {"A", "A-", "A+", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F", "S", "U", "W", "IP"}
+
+    extracted_data = {}
+    current_term = None
 
     with pdfplumber.open(pdf_path) as pdf:
         for page_num, page in enumerate(pdf.pages):
@@ -77,18 +82,39 @@ def extract_classes_and_grades(pdf_path):
             if not text:
                 continue
 
-            classes = class_pattern.findall(text)
-            grades = grade_pattern.findall(text)
+            lines = text.split('\n')
+            for line in lines:
+                # Check for term updates
+                term_match = term_pattern.search(line)
+                if term_match:
+                    current_term = term_match.group()
 
-            print(f"Page {page_num + 1} — Classes found: {classes}")
-            print(f"Page {page_num + 1} — Grades found: {grades}")
+                # Look for course code
+                course_match = class_pattern.search(line)
+                if course_match:
+                    course_code = course_match.group()
+                    tokens = line.split()
 
-            for i, course in enumerate(classes):
-                grade = grades[i] if i < len(grades) else "N/A"
-                extracted_data[course] = grade
+                    # Try to find grade in tokens after course code
+                    try:
+                        idx = tokens.index(course_code.split()[0])  # E.g., "MAC" in "MAC 2281"
+                        grade = None
+                        for token in tokens[idx+1:]:
+                            if token in valid_grades:
+                                grade = token
+                                break
+                        if grade:
+                            extracted_data[course_code] = {
+                                "grade": grade,
+                                "term": current_term or "Unknown"
+                            }
+                    except ValueError:
+                        continue
 
     if not extracted_data:
-        print("⚠️ Warning: No classes or grades extracted. Check if the transcript is a scanned image.")
+        print("⚠️ No classes or grades extracted.")
+    else:
+        print("✅ Transcript parsing complete.")
 
 
     return extracted_data, passed, failed, inprog
