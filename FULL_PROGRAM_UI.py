@@ -577,7 +577,7 @@ class Pre_Advising:
         self.rembr = None
 
         # Back Button
-        self.ok_button = tk.Button(root, text="Back", command=self.confirm_selection, font=("Arial", 14, "bold"), width=20, height=2)
+        self.ok_button = tk.Button(root, text="Save and Exit", command=self.confirm_selection, font=("Arial", 14, "bold"), width=20, height=2)
         self.ok_button.pack(pady=20)
     
     def toggle(self):
@@ -637,30 +637,44 @@ class Pre_Advising:
             self.reason_label = self.reason_entry = self.linkup = self.rembr = None 
 
             # Restore Default Lower-Level Widgets **before Back button**
+
+            with open("appointment_data.json", "r") as file:
+                self.save_data = json.load(file)
+
             self.lowl = tk.Label(self.root, text="Enter Phone Number:", font=("Arial", 10), wraplength=600)
             self.lowl.pack(pady=5, before=self.ok_button)
             self.lowlen = tk.Entry(self.root, width=30)
             self.lowlen.pack(pady=5, before=self.ok_button)
+            if "Phone Number" in self.saved_data.get():
+                self.lowlen.insert(0, self.saved_data['Phone Number'])
 
             self.campusl = tk.Label(self.root, text="Enter Campus:", font=("Arial", 10), wraplength=600)
             self.campusl.pack(pady=5, before=self.ok_button)
             self.campus = tk.Entry(self.root, width=30)
             self.campus.pack(pady=5, before=self.ok_button)
+            if "Campus" in self.saved_data:
+                self.campus.insert(0, self.saved_data['Campus'])
 
             self.collegel = tk.Label(self.root, text="Enter College (Ex. Engineering):", font=("Arial", 10), wraplength=600)
             self.collegel.pack(pady=5, before=self.ok_button)
             self.college = tk.Entry(self.root, width=30)
             self.college.pack(pady=5, before=self.ok_button)
+            if "College" in self.saved_data:
+                self.college.insert(0, self.saved_data['College'])
 
             self.majorl = tk.Label(self.root, text="Enter Major (Ex. Electrical Engineering):", font=("Arial", 10), wraplength=600)
             self.majorl.pack(pady=5, before=self.ok_button)
             self.major = tk.Entry(self.root, width=30)
             self.major.pack(pady=5, before=self.ok_button)
+            if "Major" in self.saved_data:
+                self.major.insert(0, self.saved_data['Major'])
 
             self.reasonl = tk.Label(self.root, text="Enter reason for appointment (Be concise and specific):", font=("Arial", 10), wraplength=600)
             self.reasonl.pack(pady=5, before=self.ok_button)
             self.reason = tk.Text(self.root, width=30, height=4)
             self.reason.pack(pady=5, before=self.ok_button)
+            if "Reason" in self.saved_data:
+                self.reason.insert(0, self.saved_data['Reason'])
 
             self.linklow = tk.Label(self.root, text="Click here when ready to schedule an appointment", font=("Arial", 10, "underline"), fg="blue", cursor="hand2", wraplength=600)
             self.linklow.pack(pady=5, before=self.ok_button)
@@ -676,6 +690,25 @@ class Pre_Advising:
         wb.open("https://usflearn.instructure.com/courses/923318/wiki")
 
     def confirm_selection(self):
+        data = {}
+
+        if self.upper_level_var.get():
+            data["Level"] = "Upper"
+            data["Name"] = self.name_entry.get() if self.name_entry else ""
+            data["Email"] = self.email_entry.get() if self.email_entry else ""
+            data["UID"] = self.uid_entry.get() if self.uid_entry else ""
+            data["Reason"] = self.reason_entry.get("1.0", "end").strip() if self.reason_entry else ""
+        else:
+            data["Level"] = "Lower"
+            data["Phone Number"] = self.lowlen.get() if self.lowlen else ""
+            data["Campus"] = self.campus.get() if self.campus else ""
+            data["College"] = self.college.get() if self.college else ""
+            data["Major"] = self.major.get() if self.major else ""
+            data["Reason"] = self.reason.get("1.0", "end").strip() if self.reason else ""
+        
+        with open("appointment_data.json", "w") as file:
+            json.dump(data, file, indent=4)
+        
         self.root.destroy()
 
 #==================================================================================================
