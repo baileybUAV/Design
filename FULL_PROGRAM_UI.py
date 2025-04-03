@@ -1,6 +1,6 @@
 import tkinter as tk
 import webbrowser as wb
-from tkinter import messagebox, filedialog
+from tkinter import messagebox, filedialog, ttk
 import re
 import json
 import os
@@ -9,6 +9,15 @@ import pdfplumber
 
 #==================================================================================================
 #User Defined Functions and Setup
+
+#Checking if the previous file for new classes exists
+global data3
+
+try:
+    with open("current_classes.json", "r") as file3:
+        data3 = json.load(file3)
+except FileNotFoundError:
+    data3 = []
 
 #Function that refreshes UI (checking if the transcript JSON file exists)
 def refresh_ui():
@@ -100,7 +109,6 @@ data, passed, failed, inprog = {}, [], [], []  # Initialize empty Variables
 
 #==================================================================================================
 #Class for progress checker
-
 class Progress:
     def __init__(self, root):
         self.root = root
@@ -126,6 +134,14 @@ class Progress:
             )
         )
 
+        # Enable scrolling with the mouse wheel
+        def on_mousewheel(event):
+            self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+        self.canvas.bind_all("<MouseWheel>", on_mousewheel)  # Windows & Mac
+        self.canvas.bind_all("<Button-4>", lambda event: self.canvas.yview_scroll(-1, "units"))  # Linux Scroll Up
+        self.canvas.bind_all("<Button-5>", lambda event: self.canvas.yview_scroll(1, "units"))  # Linux Scroll Down
+
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
 
@@ -150,7 +166,7 @@ class Progress:
                 course_label.pack(pady=2, anchor="center")
                 creds += int(course_info.get("credits", 0))
 
-        self.total_credits = tk.Label(root, text=f"The total Credits applied: {creds}", font=("Arial", 14, "bold"), wraplength=600)
+        self.total_credits = tk.Label(root, text=f"The Total Credits Applied: {creds}", font=("Arial", 14, "bold"), wraplength=600)
         self.total_credits.pack(pady=10)
 
         # Back Button
@@ -166,57 +182,306 @@ class Sch_Maker:
     def __init__(self, root):
         self.root = root
         root.title("Schedule Selector")
-        root.geometry("600x600")
+        root.geometry("300x250")
 
         # Title Label
-        self.title_label = tk.Label(root, text="Manual Schedule Selection", font=("Arial", 14, "bold"), wraplength=600)
+        self.title_label = tk.Label(root, text="Schedule Selection", font=("Arial", 14, "bold"), wraplength=600)
         self.title_label.pack(pady=10)
 
-        # Create a frame for the scrollable canvas and add a scrollbar
-        self.canvas = tk.Canvas(root)
-        self.scrollbar = tk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        # Button to add classes
+        self.add = tk.Button(root, text="Add Class", font=("Arial", 12), command=self.add_class)
+        self.add.pack(pady=5)
 
-        self.scrollable_frame = tk.Frame(self.canvas)
+        # Button to remove classes
+        self.remove = tk.Button(root, text="Remove Class", font=("Arial", 12), command=self.remove_class)
+        self.remove.pack(pady=5)
 
-        # Add the scrollable frame to the canvas window
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        # Button to check classes
+        self.check = tk.Button(root, text="Check Class", font=("Arial", 12), command=self.inspect_schedule)
+        self.check.pack(pady=5)
 
-        # Pack the canvas and scrollbar
-        self.canvas.pack(side="left", fill="both")
-        self.scrollbar.pack(side="right", fill="y")
+        # Back Button
+        self.ok_button = tk.Button(root, text="Back", command=self.confirm_selection, font=("Arial", 14), width=4, height=1)
+        self.ok_button.pack(pady=20)
 
-        # Add a button to add classes
-        self.button = tk.Button(root, text="Add Classes", font=("Arial", 12), command=self.add_class)
-        self.button.pack(pady=5)
+        # Call the function to check for file existence
+        self.check_file_existence()
 
-        # Update scroll region when the content is added
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        )
+    def check_file_existence(self):
+        file_exists = os.path.exists("current_classes.json")
+        
+        # Enable or disable buttons based on file existence
+        self.remove.config(state=tk.NORMAL if file_exists else tk.DISABLED)
+        self.check.config(state=tk.NORMAL if file_exists else tk.DISABLED)
 
-    def show_details(self, course_name):
-        # Updates label with the selected course name.
-        print(f"Selected Course: {course_name}")
+        # Re-run this function every 1000 milliseconds (1 second)
+        self.root.after(1000, self.check_file_existence)
 
     def add_class(self):
-        # Loads courses from JSON and creates buttons dynamically.
+        # Create a new window
+        add_window = tk.Toplevel(self.root)
+        add_window.title("Add Classes")
+        add_window.geometry("600x600")
+
+        # Create a frame for the scrollbar
+        frame = tk.Frame(add_window)
+        frame.pack(fill=tk.BOTH, expand=True)
+
+        # Create a canvas inside the frame
+        canvas = tk.Canvas(frame)
+        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Add a scrollbar to the canvas
+        scrollbar = tk.Scrollbar(frame, orient=tk.VERTICAL, command=canvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Configure the canvas
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # Create another frame inside the canvas
+        scrollable_frame = tk.Frame(canvas)
+
+        # Update scroll region when the frame changes
+        def update_scrollregion(event=None):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        scrollable_frame.bind("<Configure>", update_scrollregion)
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw", width=580)  # Ensures better centering
+
+        # Enable scrolling with the mouse wheel
+        def on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+        canvas.bind_all("<MouseWheel>", on_mousewheel)  # Windows & Mac
+        canvas.bind_all("<Button-4>", lambda event: canvas.yview_scroll(-1, "units"))  # Linux Scroll Up
+        canvas.bind_all("<Button-5>", lambda event: canvas.yview_scroll(1, "units"))  # Linux Scroll Down
+
+        # Wrapper Frame (Centers Content)
+        content_frame = tk.Frame(scrollable_frame)
+        content_frame.pack(pady=10, anchor="center")
+
+        # Label inside new window
+        label = tk.Label(content_frame, text="Choose your course:", font=("Arial", 14, "bold"))
+        label.pack(pady=10, padx=20)  # Centered with padding
+
+        # Upper Level Checker
+        self.upper_level_var = tk.BooleanVar()  
+        self.check_button = tk.Checkbutton(content_frame, text="Check if upper level", variable=self.upper_level_var, font=("Arial", 10), wraplength=500)
+        self.check_button.pack(pady=5, padx=20)
+
+        # Submit to start process
+        self.forward = tk.Button(
+            content_frame, text="Confirm", font=("Arial", 10), 
+            command=lambda: self.upper(add_window, content_frame, canvas) if self.upper_level_var.get() else self.lower(add_window, content_frame, canvas)
+        )
+        self.forward.pack(pady=5, padx=20)
+
+        # Back Button
+        self.back_button = tk.Button(content_frame, text="Back", command=lambda: self.confirm_selection2(add_window), font=("Arial", 14), width=4, height=1)
+        self.back_button.pack(pady=20, padx=20)
+
+        update_scrollregion()  # Ensure the initial scrollregion is set
+
+    def upper(self, window, frame, canvas):
+        self.forward.destroy()
+        self.check_button.destroy()
+
         with open("curriculum_full.json", "r") as file:
-            data = json.load(file)  # Load JSON data
+            data = json.load(file)
 
         with open("classes_with_grades.json", "r") as file2:
             datat = json.load(file2)
-        passed, failed, inprog = Read_Json_Grades(datat) 
 
-        courses_data = datat.get("courses", {})
+        passed, failed, inprog = Read_Json_Grades(datat)
+        courses_data = data.get("courses", {})
 
-        # Create buttons for each course and add them to the scrollable frame
+        self.allbutton = tk.Button(frame, text="Show all", font=("Arial",12, "bold"), 
+                              command=lambda: self.all_in_H(courses_data, frame))
+        self.allbutton.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        self.recommended = tk.Button(frame, text="Show recommended", font=("Arial",12, "bold"), 
+                                command=lambda: self.rec_high(courses_data, passed, inprog, frame))
+        self.recommended.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        save = tk.Button(frame, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
+        save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
+        text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
+
+        canvas.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
+
+    def lower(self, window, frame, canvas):
+        self.forward.destroy()
+        self.check_button.destroy()
+
+        with open("curriculum_full.json", "r") as file:
+            data = json.load(file)
+
+        with open("classes_with_grades.json", "r") as file2:
+            datat = json.load(file2)
+
+        passed, failed, inprog = Read_Json_Grades(datat)
+        courses_data = data.get("courses", {})
+
+        self.allbutton = tk.Button(frame, text="Show all", font=("Arial",12, "bold"), 
+                              command=lambda: self.all_in_L(courses_data, frame))
+        self.allbutton.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        self.recommended = tk.Button(frame, text="Show recommended", font=("Arial",12, "bold"), 
+                                command=lambda: self.rec_low(courses_data, passed, inprog, frame))
+        self.recommended.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        canvas.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
+
+    # Create recommended classes buttons
+    def rec_low(self, courses_data, passed, inprog, frame):
+        self.recommended.destroy()
+        self.allbutton.destroy()
+
         for course_code, course_info in courses_data.items():
-            if course_code not in passed and course_code not in inprog:
-                button = tk.Button(self.scrollable_frame, text=course_info["name"],
-                                    command=lambda name=course_info["name"]: self.show_details(name))
-                button.pack(pady=5)
+            if course_code not in passed and course_code not in inprog and course_info['type'] == "required":
+                btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 
+                                command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
+                btn.pack(pady=5, padx=20, fill=tk.X, before=self.back_button)
+
+        save = tk.Button(frame, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
+        save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
+        text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
+
+
+    def rec_high(self, courses_data, passed, inprog, frame):
+        self.recommended.destroy()
+        self.allbutton.destroy()
+
+        for course_code, course_info in courses_data.items():
+            if course_code not in passed and course_code not in inprog and course_info["type"] != "required":
+                btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 
+                                command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
+                btn.pack(pady=5, padx=20, fill=tk.X, before=self.back_button)
+
+        save = tk.Button(frame, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
+        save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
+        text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
+
+
+    # Create all classes buttons
+    def all_in_L(self, courses_data, frame):
+        self.recommended.destroy()
+        self.allbutton.destroy()
+        
+        for course_code, course_info in courses_data.items():
+            btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 
+                                command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
+            btn.pack(pady=5, padx=20, fill=tk.X, before=self.back_button)
+
+        save = tk.Button(frame, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
+        save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
+        text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
+
+
+    def all_in_H(self, courses_data, frame):
+        self.recommended.destroy()
+        self.allbutton.destroy()
+
+        for course_code, course_info in courses_data.items():
+            btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 
+                                command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
+            btn.pack(pady=5, padx=20, fill=tk.X, before=self.back_button)
+
+        save = tk.Button(frame, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
+        save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+        text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
+        text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
+
+
+    def remove_class(self):
+        # Create a new window
+        remove_window = tk.Toplevel(self.root)
+        remove_window.title("Remove Classes")
+        remove_window.geometry("600x600")
+
+        # Label inside new window
+        label = tk.Label(remove_window, text="Choose a course to remove:", font=("Arial", 14, "bold"))
+        label.pack(pady=10)
+
+        with open("curriculum_full.json", "r") as file:
+            data = json.load(file)
+        
+        courses_data = data.get("courses", {})
+        
+        with open("current_classes.json", "r") as file:
+            data3 = json.load(file)
+
+        for course_code, course_info in courses_data.items():
+            if course_code in data3:
+                classes = tk.Button(remove_window, text=f"{course_code}: {course_info['name']}", font=("Arial", 12), command=lambda opt=course_code: data3.remove(opt))
+                classes.pack(pady=5, padx=20, fill=tk.X)
+        
+        # Save Button
+        save = tk.Button(remove_window, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
+        save.pack(pady=5, padx=30, fill=tk.X)
+
+        # Back Button
+        self.back_button = tk.Button(remove_window, text="Back", command=lambda: self.confirm_selection2(remove_window), font=("Arial", 14), width=4, height=1)
+        self.back_button.pack(pady=20)
+
+    def inspect_schedule(self):
+        # Create a new window
+        inspect = tk.Toplevel(self.root)
+        inspect.title("Inspect Schedule")
+        inspect.geometry("600x600")
+
+        # Label for currently selected classes
+        self.label = tk.Label(inspect, text="Currently selected classes:", font=("Arial", 12, "bold"))
+        self.label.pack(pady=5)
+
+        with open("curriculum_full.json", "r") as file:
+            data = json.load(file)
+        
+        courses_data = data.get("courses", {})
+        
+        with open("current_classes.json", "r") as file:
+            data3 = json.load(file)
+        
+        c = 0  # Total credits
+
+        for course_code, course_info in courses_data.items():
+            if course_code in data3:
+                classes = tk.Label(inspect, text=f"{course_code}: {course_info['name']}", font=("Arial", 12))
+                classes.pack(pady=5)
+                c += int(course_info['credits'])
+
+        # Total credits label
+        label = tk.Label(inspect, text=f"Total Credits:  {c}", font=("Arial", 12, "bold"))
+        label.pack(pady=5)
+
+        # Back Button
+        self.back_button = tk.Button(inspect, text="Back", command=lambda: self.confirm_selection2(inspect), font=("Arial", 14, "bold"), width=4, height=1)
+        self.back_button.pack(pady=20)
+
+    # User defined functions
+    def confirm_selection(self):
+        self.root.destroy()
+
+    def confirm_selection2(self, window):
+        window.destroy()
+
+    def save(self, data):
+        # Save to JSON file
+        with open("current_classes.json", "w") as json_file:
+            json.dump(data, json_file, indent=4)
+        
 
 #==================================================================================================
 #Class for pre-advising checklist
@@ -551,7 +816,7 @@ title_label.pack(pady=10)
 btn = tk.Button(root, text="Transcript Parser", font=("Arial", 12), command=lambda opt="Transcript Parser": show_selection(opt)) #Buttons to select feature
 btn.pack(pady=5, fill=tk.X, padx=20)
 
-options = ["Progress Tracking", "Planning Tools", "Dynamic Checklist Generation", "Pre-Advising Checklist"]
+options = ["Progress Tracking", "Planning Tools", "Flowchart Maker", "Pre-Advising Checklist"]
 for option in options:
     btn = tk.Button(root, text=option, font=("Arial", 12), state=tk.NORMAL if os.path.exists("classes_with_grades.json") else tk.DISABLED, command=lambda opt=option: show_selection(opt))
     btn.pack(pady=5, fill=tk.X, padx=20)
@@ -559,7 +824,7 @@ for option in options:
 btn = tk.Button(root, text="Help", font=("Arial", 12), command=lambda opt="Help": show_selection(opt))
 btn.pack(pady=5, fill=tk.X, padx=20)
 
-btn = tk.Button(root, text="Close", font=("Arial", 12), command=lambda opt="Close": show_selection(opt))
+btn = tk.Button(root, text="Close", font=("Arial", 12, "bold"), command=lambda opt="Close": show_selection(opt))
 btn.pack(pady=5, fill=tk.X, padx=20)
 
 selection_label = tk.Label(root, text="Previous Selection: ...", font=("Arial", 12)) #Display of previously selected feature
@@ -567,5 +832,4 @@ selection_label.pack(pady=10)
 
 
 refresh_ui()
-
 root.mainloop()
