@@ -13,10 +13,10 @@
       "credits": 4,
       "type": "required",
       "description": "Focuses on both theoretical frameworks and real-world uses of calculus 2.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2281",
         "MAC 2311"
-      ],
+      ]],
       "semester": 1
     },
     "MAC 2313": {
@@ -24,10 +24,10 @@
       "credits": 4,
       "type": "required",
       "description": "A comprehensive look at the methods and tools used in calculus 3.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2282",
         "MAC 2312"
-      ],
+      ]],
       "semester": 2
     },
     "MAC 2281": {
@@ -43,10 +43,10 @@
       "credits": 4,
       "type": "required",
       "description": "An in-depth study focusing on the core aspects of engineering calc 2.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2281",
         "MAC 2311"
-      ],
+      ]],
       "semester": 1
     },
     "MAC 2283": {
@@ -54,10 +54,10 @@
       "credits": 4,
       "type": "required",
       "description": "Gain foundational knowledge and problem-solving skills in engineering calc 3.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2282",
         "MAC 2312"
-      ],
+      ]],
       "semester": 2
     },
     "PHY 2048": {
@@ -65,10 +65,10 @@
       "credits": 3,
       "type": "required",
       "description": "Learn essential concepts and practices involved in general physics 1.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2281",
         "MAC 2311"
-      ],
+      ]],
       "semester": 1
     },
     "PHY 2048L": {
@@ -76,10 +76,10 @@
       "credits": 1,
       "type": "required",
       "description": "This course introduces major theories and methods related to general physics 1 lab.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2281",
         "MAC 2312"
-      ],
+      ]],
       "semester": 1
     },
     "CHM 2045": {
@@ -87,10 +87,10 @@
       "credits": 3,
       "type": "required",
       "description": "An in-depth study focusing on the core aspects of general chemistry 1.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2311",
         "MAC 2281"
-      ],
+      ]],
       "semester": 0
     },
     "CHM 2045L": {
@@ -98,10 +98,10 @@
       "credits": 1,
       "type": "required",
       "description": "Learn essential concepts and practices involved in general chemistry 1 lab.",
-      "prerequisites": [
+      "prerequisites": [[
         "CHM 2045",
         "CHS 2440"
-      ],
+      ]],
       "semester": 0
     },
     "CHS 2440": {
@@ -109,10 +109,10 @@
       "credits": 3,
       "type": "required",
       "description": "A comprehensive look at the methods and tools used in general chemistry for engineers.",
-      "prerequisites": [
+      "prerequisites": [[
         "MAC 2311",
         "MAC 2283"
-      ],
+      ]],
       "semester": 0
     },
     "CHS 2440L": {
@@ -120,10 +120,10 @@
       "credits": 1,
       "type": "required",
       "description": "Focuses on both theoretical frameworks and real-world uses of general chemistry for engineers lab.",
-      "prerequisites": [
+      "prerequisites": [[
         "CHM 2045",
         "CHS 2440"
-      ],
+      ]],
       "semester": 0
     },
     "MAP 2302": {
@@ -132,10 +132,18 @@
       "type": "required",
       "description": "Investigate the role and significance of differential equations in engineering and science.",
       "prerequisites": [
-        "MAC 2282",
-        "MAC 2312",
-        "MAC 2283",
-        "MAC 2313"
+        [
+          [
+            "MAC 2282",
+            "MAC 2312"
+          ]
+        ],
+        [
+          [
+            "MAC 2283",
+            "MAC 2313"
+          ]
+        ]
       ],
       "semester": 3
     },
@@ -145,10 +153,18 @@
       "type": "required",
       "description": "A comprehensive look at the methods and tools used in modeling and analysis of engineering systems.",
       "prerequisites": [
-        "MAC 2282",
-        "MAC 2312",
-        "MAC 2283",
-        "MAC 2313"
+        [
+          [
+            "MAC 2282",
+            "MAC 2312"
+          ]
+        ],
+        [
+          [
+            "MAC 2283",
+            "MAC 2313"
+          ]
+        ]
       ],
       "semester": 3
     },
@@ -158,10 +174,14 @@
       "type": "required",
       "description": "An in-depth study focusing on the core aspects of ee science 1 - electronic materials.",
       "prerequisites": [
-        "CHS 2440",
-        "CHM 2045",
-        "PHY 2048",
-        "PHY 2060"
+        [
+          "CHS 2440",
+          "CHM 2045"
+        ],
+        [
+          "PHY 2048",
+          "PHY 2060"
+        ]
       ],
       "semester": 2
     },
@@ -292,10 +312,10 @@
       "credits": 3,
       "type": "required",
       "description": "This course introduces major theories and methods related to electrical systems 1.",
-      "prerequisites": [
-        "EGN 3433",
-        "MAP 2302"
-      ],
+      "prerequisites": [[
+          "EGN 3433",
+          "MAP 2302"
+       ]],
       "semester": null
     },
     "EGN 3374": {
@@ -353,9 +373,7 @@
       "credits": 3,
       "type": "required",
       "description": "An in-depth study focusing on the core aspects of ee design 1.",
-      "prerequisites": [
-        "SENIOR YEAR"
-      ],
+      "prerequisites": [],
       "semester": null
     },
     "EEL 4914": {
@@ -363,9 +381,7 @@
       "credits": 3,
       "type": "required",
       "description": "This course introduces major theories and methods related to ee design 2.",
-      "prerequisites": [
-        "SENIOR YEAR"
-      ],
+      "prerequisites": [],
       "semester": null
     },
     "EGN 3375": {
