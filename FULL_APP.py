@@ -125,7 +125,7 @@ def extract_classes_and_grades(pdf_path):
 def Read_Json_Grades(JSON_data): 
     passed, failed, inprog = [], [], []
     for k, s in JSON_data.items():
-        if s['grade'] in ["A", "A-", "B+", "B", "B-", "C+", "C", "S"]:
+        if s['grade'] in ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "S"]:
             passed.append(k)
         elif s['grade'] == "IP":
             inprog.append(k)
@@ -252,12 +252,42 @@ class Progress:
         
         passed, failed, inprog = Read_Json_Grades(datat) 
         courses_data = data.get("courses", {})
-        
-        for course_code, course_info in courses_data.items():
-            if course_code in passed or course_code in inprog:
+
+        course_label = tk.Label(self.scrollable_frame, text="Passed Classes:", font=("Arial", 12, "bold"))
+        course_label.pack(pady=2, anchor="center")
+
+        # Printing Passed classes by order taken
+        for course_code in passed:
+            course_info = courses_data.get(course_code)
+            if course_info is None:
+                course_info = {'name': 'N\A', 'credits': 3}
+            course_label = tk.Label(self.scrollable_frame, text=f"Code: {course_code}       Name: {course_info['name']}\nGrade:  {datat[course_code]['grade']}       Term: {datat[course_code]['term']} \n\n")
+            course_label.pack(pady=2, anchor="center")
+            creds += int(course_info['credits'])
+
+        if failed:
+            course_label = tk.Label(self.scrollable_frame, text="Failed Classes:", font=("Arial", 12, "bold"))
+            course_label.pack(pady=2, anchor="center")
+            # Printing Failed classes by order taken
+            for course_code in failed:
+                course_info = courses_data.get(course_code)
+                if course_info is None:
+                    course_info = {'name': 'N/A', 'credits': 0}
                 course_label = tk.Label(self.scrollable_frame, text=f"Code: {course_code}       Name: {course_info['name']}\nGrade:  {datat[course_code]['grade']}       Term: {datat[course_code]['term']} \n\n")
                 course_label.pack(pady=2, anchor="center")
-                creds += int(course_info.get("credits", 0))
+                creds += int(course_info['credits'])
+        
+        course_label = tk.Label(self.scrollable_frame, text="In Progress Classes:", font=("Arial", 12, "bold"))
+        course_label.pack(pady=2, anchor="center")
+
+        # Printing IP classes by order taken
+        for course_code in inprog:
+            course_info = courses_data.get(course_code)
+            if course_info is None:
+                course_info = {'name': 'N/A', 'credits': 0}
+            course_label = tk.Label(self.scrollable_frame, text=f"Code: {course_code}       Name: {course_info['name']}\nGrade:  {datat[course_code]['grade']}       Term: {datat[course_code]['term']} \n\n")
+            course_label.pack(pady=2, anchor="center")
+            creds += int(course_info['credits'])
 
         self.total_credits = tk.Label(root, text=f"The Total Credits Applied: {creds}", font=("Arial", 14, "bold"), wraplength=600)
         self.total_credits.pack(pady=10)
@@ -270,7 +300,7 @@ class Progress:
         self.root.destroy()
 
 #==================================================================================================
-# Class for manual schedule maker
+# Class for schedule maker
 class Sch_Maker:
     def __init__(self, root):
         self.root = root
@@ -430,13 +460,17 @@ class Sch_Maker:
         canvas.update_idletasks()
         canvas.configure(scrollregion=canvas.bbox("all"))
 
-    # Create recommended classes buttons
+    # Function for recommended classes (low)
     def rec_low(self, courses_data, passed, inprog, frame):
         self.recommended.destroy()
         self.allbutton.destroy()
 
+        # Creating Buttons for recommended classes
         for course_code, course_info in courses_data.items():
-            if course_code not in passed and course_code not in inprog and course_info['type'] == "required":
+            if (course_code not in passed 
+                and course_code not in inprog 
+                and course_info.get('alternative') not in (passed or inprog)
+                and course_info['type'] == "required"):
                 btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 
                                 command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
                 btn.pack(pady=5, padx=20, fill=tk.X, before=self.back_button)
@@ -447,11 +481,12 @@ class Sch_Maker:
         text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
         text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
 
-
+    # Function for recommended classes (High)
     def rec_high(self, courses_data, passed, inprog, frame):
         self.recommended.destroy()
         self.allbutton.destroy()
 
+        # Creating Buttons for recommended classes
         for course_code, course_info in courses_data.items():
             if course_code not in passed and course_code not in inprog and course_info["type"] != "required":
                 btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 

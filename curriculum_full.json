@@ -6,6 +6,7 @@
       "type": "required",
       "description": "Explore key principles and applications in calculus 1.",
       "prerequisites": [],
+      "alternative": "MAC 2281",
       "semester": 0
     },
     "MAC 2312": {
@@ -17,6 +18,7 @@
         "MAC 2281",
         "MAC 2311"
       ]],
+      "alternative": "MAC 2282",
       "semester": 1
     },
     "MAC 2313": {
@@ -28,6 +30,7 @@
         "MAC 2282",
         "MAC 2312"
       ]],
+      "alternative": "MAC 2283",
       "semester": 2
     },
     "MAC 2281": {
@@ -36,6 +39,7 @@
       "type": "required",
       "description": "Explore key principles and applications in engineering calc 1.",
       "prerequisites": [],
+      "alternative": "MAC 2311",
       "semester": 0
     },
     "MAC 2282": {
@@ -47,6 +51,7 @@
         "MAC 2281",
         "MAC 2311"
       ]],
+      "alternative": "MAC 2312",
       "semester": 1
     },
     "MAC 2283": {
@@ -58,6 +63,7 @@
         "MAC 2282",
         "MAC 2312"
       ]],
+      "alternative": "MAC 2313",
       "semester": 2
     },
     "PHY 2048": {
