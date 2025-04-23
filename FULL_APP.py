@@ -1,6 +1,7 @@
 import tkinter as tk
 import webbrowser as wb
-from tkinter import messagebox, filedialog, ttk
+from tkinter import messagebox, filedialog, ttk, PhotoImage, Label
+from PIL import Image, ImageTk
 import re
 import json
 import os
@@ -462,7 +463,8 @@ class Sch_Maker:
         # Creating Buttons for recommended classes
         for course_code, course_info in courses_data.items():
             if (course_code not in passed 
-                and course_code not in inprog 
+                and course_code not in inprog
+                #and course_info['prerequisites'] in (passed or inprog) # Based on how everything is built in the dataset (and school), it cannot be implemented because it wont show classes.
                 and course_info.get('alternative') not in (passed or inprog)
                 and course_info['type'] == "required"):
                 btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 
@@ -499,6 +501,7 @@ class Sch_Maker:
             for course_code, course_info in courses_data.items():
                 if (course_code not in passed and 
                     course_code not in inprog and 
+                    #course_info['prerequisites'] in (passed or inprog) and #  # Based on how everything is built in the dataset (and school), it cannot be implemented because it wont show classes.
                     course_type in course_info["type"]):
                     btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10),
                                     command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
@@ -952,7 +955,15 @@ class FileUploader:
 
 root = tk.Tk()
 root.title("Electrical Engineering Course Planning Tool")
-root.geometry("400x500")
+root.geometry("500x500")
+
+# Load and resize the image to match the window size
+bg_image = Image.open("RootPic.png").resize((400, 400))  # Resize to fit the window
+rp = ImageTk.PhotoImage(bg_image)
+
+# Create a background label
+label1 = Label(root, image=rp)
+label1.place(x=0, y=0, relwidth=1, relheight=1)  # Cover full window
 
 title_label = tk.Label(root, text="Select a Feature", font=("Arial", 14, "bold")) #Titles and subtitles
 title_label.pack(pady=10)
