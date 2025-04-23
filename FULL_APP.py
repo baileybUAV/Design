@@ -427,12 +427,6 @@ class Sch_Maker:
                                 command=lambda: self.rec_high(courses_data, passed, inprog, frame))
         self.recommended.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
 
-        save = tk.Button(frame, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
-        save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
-
-        text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
-        text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
-
         canvas.update_idletasks()
         canvas.configure(scrollregion=canvas.bbox("all"))
 
@@ -486,18 +480,52 @@ class Sch_Maker:
         self.recommended.destroy()
         self.allbutton.destroy()
 
-        # Creating Buttons for recommended classes
-        for course_code, course_info in courses_data.items():
-            if course_code not in passed and course_code not in inprog and course_info["type"] != "required":
-                btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10), 
-                                command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
-                btn.pack(pady=5, padx=20, fill=tk.X, before=self.back_button)
+        def show_recommendations(course_type):
 
-        save = tk.Button(frame, text="Save", font=("Arial",12, "bold"), command=lambda: self.save(data3))
-        save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+            # Destroy previous buttons
+            self.check_core.destroy()
+            self.check_track.destroy()
+            self.check_tech.destroy()
 
-        text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial",8))
-        text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
+            titles = {
+                "core": "Showing recommended cores",
+                "track": "Showing recommended Tracks",
+                "tech": "Showing recommended Tech. Elect."
+            }
+
+            self.title_2 = tk.Label(frame, text=titles[course_type], font=("Arial", 10, "bold"))
+            self.title_2.pack(pady=5, padx=20, before=self.back_button)
+
+            for course_code, course_info in courses_data.items():
+                if (course_code not in passed and 
+                    course_code not in inprog and 
+                    course_type in course_info["type"]):
+                    btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10),
+                                    command=lambda opt=course_code: data3.append(opt) if opt not in data3 else print("Already used"))
+                    btn.pack(pady=5, padx=20, fill=tk.X, before=self.back_button)
+
+            save = tk.Button(frame, text="Save", font=("Arial", 12, "bold"), command=lambda: self.save(data3))
+            save.pack(pady=5, padx=30, fill=tk.X, before=self.back_button)
+
+            text = tk.Label(frame, text="To update changes close and open the schedule maker!", font=("Arial", 8))
+            text.pack(pady=5, padx=5, fill=tk.X, before=self.back_button)
+
+        # Create type selector buttons
+        self.check_core = tk.Button(frame, text="Check to see recommended Cores",
+                                    command=lambda: show_recommendations("core"),
+                                    font=("Arial", 10), wraplength=500)
+        self.check_core.pack(pady=5, padx=20, before=self.back_button)
+
+        self.check_track = tk.Button(frame, text="Check to see recommended Tracks",
+                                    command=lambda: show_recommendations("track"),
+                                    font=("Arial", 10), wraplength=500)
+        self.check_track.pack(pady=5, padx=20, before=self.back_button)
+
+        self.check_tech = tk.Button(frame, text="Check to see recommended Tech. Elect.",
+                                    command=lambda: show_recommendations("tech"),
+                                    font=("Arial", 10), wraplength=500)
+        self.check_tech.pack(pady=5, padx=20, before=self.back_button)
+
 
 
     # Create all classes buttons
