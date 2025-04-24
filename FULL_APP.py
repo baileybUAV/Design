@@ -261,7 +261,7 @@ class Progress:
         for course_code in passed:
             course_info = courses_data.get(course_code)
             if course_info is None:
-                course_info = {'name': 'N\A', 'credits': 3}
+                course_info = {'name': 'N/A', 'credits': 3}
             course_label = tk.Label(self.scrollable_frame, text=f"Code: {course_code}       Name: {course_info['name']}\nGrade:  {datat[course_code]['grade']}       Term: {datat[course_code]['term']} \n\n")
             course_label.pack(pady=2, anchor="center")
             creds += int(course_info['credits'])
