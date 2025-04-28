@@ -138,6 +138,11 @@ data, passed, failed, inprog = {}, [], [], []  # Initialize empty Variables
 
 #==================================================================================================
 # Class FLowchart Generator
+import json
+import graphviz
+from tkinter import messagebox
+
+# Class Flowchart Generator
 class Flowchart_Generator:
     def __init__(self):
         # ----------------------------
@@ -147,9 +152,10 @@ class Flowchart_Generator:
             data = json.load(f)
 
         with open("current_classes.json", "r") as f:
-            data2 = json.load(f)
+            data2 = json.load(f)  # This is a LIST, not a dict
         print(data)
         print(data2)
+
         # ----------------------------
         # Group courses by term
         # ----------------------------
@@ -159,11 +165,20 @@ class Flowchart_Generator:
             term_groups.setdefault(term, []).append(course_code)
 
         # ----------------------------
+        # Add current_classes.json data into Fall 2025
+        # ----------------------------
+        fall_2025_term = "Fall 2025"
+        if fall_2025_term not in term_groups:
+            term_groups[fall_2025_term] = []
+
+        for course_code in data2:
+            term_groups[fall_2025_term].append(course_code)
+
+        # ----------------------------
         # Sort terms chronologically
         # ----------------------------
         def term_sort_key(term):
             parts = term.split()
-            print(parts)
             if len(parts) == 2:
                 season, year = parts
                 season_order = {"Spring": 1, "Summer": 2, "Fall": 3}
@@ -171,7 +186,7 @@ class Flowchart_Generator:
             return (9999, 0)
 
         sorted_terms = sorted(term_groups.keys(), key=term_sort_key)
-        
+
         # ----------------------------
         # Create Graphviz flowchart
         # ----------------------------
@@ -204,7 +219,7 @@ class Flowchart_Generator:
         # Output PNG file
         # ----------------------------
         dot.render("transcript_semester_flowchart", format="png", cleanup=True)
-        messagebox.showinfo("Operation Succesful", "✅ Flowchart saved as transcript_semester_flowchart.png")
+        messagebox.showinfo("Operation Successful", "✅ Flowchart saved as transcript_semester_flowchart.png")
 
 #==================================================================================================
 # Class for progress checker
