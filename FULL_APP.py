@@ -146,6 +146,10 @@ class Flowchart_Generator:
         with open("classes_with_grades.json", "r") as f:
             data = json.load(f)
 
+        if os.path.exists("current_classes.json"):
+            with open("current_classes.json", "r") as file:
+                data3 = json.load(file)
+
         # ----------------------------
         # Group courses by term
         # ----------------------------
