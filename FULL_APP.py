@@ -146,6 +146,10 @@ class Flowchart_Generator:
         with open("classes_with_grades.json", "r") as f:
             data = json.load(f)
 
+        with open("current_classes.json", "r") as f:
+            data2 = json.load(f)
+        print(data)
+        print(data2)
         # ----------------------------
         # Group courses by term
         # ----------------------------
@@ -159,6 +163,7 @@ class Flowchart_Generator:
         # ----------------------------
         def term_sort_key(term):
             parts = term.split()
+            print(parts)
             if len(parts) == 2:
                 season, year = parts
                 season_order = {"Spring": 1, "Summer": 2, "Fall": 3}
@@ -166,7 +171,7 @@ class Flowchart_Generator:
             return (9999, 0)
 
         sorted_terms = sorted(term_groups.keys(), key=term_sort_key)
-
+        
         # ----------------------------
         # Create Graphviz flowchart
         # ----------------------------
