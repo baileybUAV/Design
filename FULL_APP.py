@@ -459,11 +459,16 @@ class Sch_Maker:
     def rec_low(self, courses_data, passed, inprog, frame):
         self.recommended.destroy()
         self.allbutton.destroy()
+        
+        if os.path.exists("current_classes.json"):
+            with open("current_classes.json", "r") as file:
+                data3 = json.load(file)
 
         # Creating Buttons for recommended classes
         for course_code, course_info in courses_data.items():
             if (course_code not in passed 
                 and course_code not in inprog
+                and course_code not in data3
                 #and course_info['prerequisites'] in (passed or inprog) # Based on how everything is built in the dataset (and school), it cannot be implemented because it wont show classes.
                 and course_info.get('alternative') not in (passed or inprog)
                 and course_info['type'] == "required"):
@@ -495,12 +500,17 @@ class Sch_Maker:
                 "tech": "Showing recommended Tech. Elect."
             }
 
+            if os.path.exists("current_classes.json"):
+                with open("current_classes.json", "r") as file:
+                    data3 = json.load(file)
+
             self.title_2 = tk.Label(frame, text=titles[course_type], font=("Arial", 10, "bold"))
             self.title_2.pack(pady=5, padx=20, before=self.back_button)
 
             for course_code, course_info in courses_data.items():
                 if (course_code not in passed and 
-                    course_code not in inprog and 
+                    course_code not in inprog and
+                    course_code not in data3 and
                     #course_info['prerequisites'] in (passed or inprog) and #  # Based on how everything is built in the dataset (and school), it cannot be implemented because it wont show classes.
                     course_type in course_info["type"]):
                     btn = tk.Button(frame, text=f"{course_code}: {course_info['name']}", font=("Arial", 10),
